@@ -24,5 +24,5 @@ Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
     Route::get('/user',"HomeController@getToken");
 });
 
-Route::get('getUnionId','Wechat\WechatController@mini');
+Route::any('getUnionId','Wechat\WechatController@mini');
 
