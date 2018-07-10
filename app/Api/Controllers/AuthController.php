@@ -30,8 +30,8 @@ class AuthController extends BaseController
     public function authenticate(Request $request)
     {
         $payload = [
-            'name' => 'lisan',
-            'password' => $request->get('password')
+            'union_id' => $request->get('union_id'),
+            'password' => "admin123"
         ];
         try {
             if (!$token = JWTAuth::attempt($payload)) {
@@ -49,9 +49,10 @@ class AuthController extends BaseController
     public function register(Request $request)
     {
         $newUser = [
-            'user_email' => $request->get('email'),
-            'user_name' => $request->get('name'),
-            'user_pwd' => bcrypt($request->get('password'))
+            'union_id' => $request->get('union_id'),
+            'name' => $request->get('name'),
+            'password' => bcrypt("admin123"),
+            'avatar_url' => bcrypt("admin123")
         ];
         $user = Client::create($newUser);
         $token = JWTAuth::fromUser($user);

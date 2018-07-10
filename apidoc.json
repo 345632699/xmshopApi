@@ -1,0 +1,12 @@
+{
+  "name": "apidoc-example",
+  "version": "0.3.0",
+  "description": "apidoc example project",
+  "title": "Custom apiDoc browser title",
+  "url" : "http://www.xm.com/api",
+  "sampleUrl": "http://www.xm.com/api",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}

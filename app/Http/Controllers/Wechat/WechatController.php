@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Wechat;
 
+use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class WechatController extends Controller
 {
+    use Helpers;
     public function mini(Request $request){
         $code = $request->code;
         $iv = $request->iv;
@@ -16,7 +18,6 @@ class WechatController extends Controller
         }
         $app = app('wechat.mini_program');
         $res = $app->auth->session($code);
-
         $decryptedData = $app->encryptor->decryptData($res['session_key'], $iv, $encryptedData);
         dd($decryptedData);
         return $res;

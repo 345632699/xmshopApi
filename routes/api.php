@@ -31,5 +31,25 @@ $api->version('v1', function ($api) {
             $api->get('tests/{id}', 'TestsController@show');
             $api->post('user/me', 'AuthController@AuthenticatedUser'); //根据
         });
+
+        //商品路由
+        $api->get('good','Goods\GoodController@index');
+
+        //收货地址
+        $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
+            $api->get('address','Address\AddressController@index');
+            $api->get('address/{id}','Address\AddressController@get');
+            $api->post('address/create','Address\AddressController@create');
+            $api->post('address/{id}/edit','Address\AddressController@edit');
+
+            $api->get('order/list/{order_status}','Order\OrderController@getOrderList');
+            $api->post('order/create','Order\OrderController@create');
+
+        });
+
+        //用户中心
+        $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
+            $api->get('client','Client\ClientController@index');
+        });
     });
 });
