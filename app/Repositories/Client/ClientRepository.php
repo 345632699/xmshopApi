@@ -59,7 +59,7 @@ class ClientRepository implements ClientRepositoryInterface
      */
     public function updateTreeNode($client_id, $parent_id)
     {
-        \DB::table('client_link_treepaths')->where('path_end_')
+        \DB::table('client_link_treepaths')->where('path_end_client_id')
 
     }
 }
