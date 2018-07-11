@@ -21,6 +21,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function createOrderHeader($request,$client_id)
     {
         $order_header_data['client_id'] = $client_id;
+        $order_header_data['contract_id'] = $request->address_id;
         $order_header_data['order_number'] = config('wechat.payment.default.mch_id').time();
         $order_header_data['order_date'] = Carbon::now();
         $order_header_data['open_invoice_flag'] = $request->get('open_invoice_flag','N');

@@ -20,6 +20,7 @@ class Order extends Model
         'pay_date',
         'completion_date',
         'return_date',
+        'contract_id',
         'request_close_date',
         'open_invoice_flag',
         'updated_at',

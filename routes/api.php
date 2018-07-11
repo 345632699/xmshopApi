@@ -43,6 +43,7 @@ $api->version('v1', function ($api) {
             $api->post('address/{id}/edit','Address\AddressController@edit');
 
             $api->get('order/list/{order_status}','Order\OrderController@getOrderList');
+            $api->get('order/get/{id}','Order\OrderController@get');
             $api->post('order/create','Order\OrderController@create');
 
         });

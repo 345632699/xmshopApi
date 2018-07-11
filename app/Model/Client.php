@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class Client extends Authenticatable
 {
-  protected $fillable = ['id','phone_num','union_id','password','avatar_url'];
+  protected $fillable = ['id','phone_num','union_id','password','avatar_url','open_id','gender'];
 
   /**
    * Get the identifier that will be stored in the subject claim of the JWT.

@@ -3,7 +3,9 @@
 namespace App\Api\Controllers\Order;
 
 use App\Api\Controllers\BaseController;
+use App\Model\Contact;
 use App\Model\Delivery;
+use App\Model\Good;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use App\Repositories\Client\ClientRepository;
@@ -36,7 +38,61 @@ class OrderController extends BaseController
     }
 
     public function get($id){
+        $order = Order::select('order_headers.*','color','quantity','size','unit_price','good_id')
+                ->leftJoin('order_lines as ol','order_headers.uid','=','ol.header_id')
+                ->where('order_headers.uid',$id)->first();
 
+        //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
+        $order_status = $order->order_status;
+        switch ($order_status){
+            case $order_status == 0:
+                $order->order_status_name = "未支付";
+                break;
+            case $order_status == 1:
+                $order->order_status_name = "已支付";
+                break;
+            case $order_status == 2:
+                $order->order_status_name = "待发货";
+                break;
+            case $order_status == 3:
+                $order->order_status_name = "已发货";
+                break;
+            case $order_status == 4:
+                $order->order_status_name = "已完成";
+                break;
+            case $order_status == 5:
+                $order->order_status_name = "异常";
+                break;
+            case $order_status == 6:
+                $order->order_status_name = "申请退货";
+                break;
+            case $order_status == 7:
+                $order->order_status_name = "确认退货";
+                break;
+            case $order_status == 8:
+                $order->order_status_name = "已退货";
+                break;
+        }
+        // 0-预付款，1-货到付款
+        if ($order->order_type){
+            $order->order_type_name = '微信支付';
+        }else{
+            $order->order_type_name = '货到付款';
+        }
+
+
+        $good = Good::find($order->good_id);
+        $address = Contact::where('uid',$order->contract_id)->first();
+        $delivery = Delivery::where('order_header_id',$order->uid)->first();
+        $invoce = \DB::table('invoce_record')->where('order_id',$order->uid)->first();
+        if (!$invoce)
+            $invoce = [];
+        $data['order'] = $order;
+        $data['good'] = $good;
+        $data['address'] = $address;
+        $data['delivery'] = $delivery;
+        $data['invoce'] = $invoce;
+        return response_format($data);
     }
 
     /**
@@ -45,7 +101,6 @@ class OrderController extends BaseController
      * 订单状态，ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
      */
     public function getOrderList($order_status){
-
         $order_list = $this->order->getOrderList($order_status);
         return response_format($order_list);
     }
