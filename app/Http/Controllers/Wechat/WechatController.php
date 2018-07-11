@@ -6,6 +6,7 @@ use App\Model\Client;
 use Dingo\Api\Routing\Helpers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use JWTAuth;
 
 class WechatController extends Controller
 {
