@@ -28,7 +28,7 @@ class WechatController extends Controller
         if (!$client){
             $newUser = [
                 'union_id' => $decryptedData['unionId'],
-                'name' => $decryptedData['nickName'],
+                'nick_name' => $decryptedData['nickName'],
                 'password' => bcrypt("admin123"),
                 'avatar_url' => $decryptedData['avatarUrl'],
                 'open_id' => $decryptedData['openId'],
