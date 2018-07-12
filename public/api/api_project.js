@@ -1,7 +1,7 @@
 define({
-  "name": "apidoc-example",
-  "version": "0.3.0",
-  "description": "apidoc example project",
+  "name": "小萌商城API",
+  "version": "0.0.1",
+  "description": "小萌商城API",
   "title": "Custom apiDoc browser title",
   "url": "http://xmshop.mqphp.com/api",
   "sampleUrl": "http://xmshop.mqphp.com/api",
@@ -13,7 +13,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-07-12T04:13:03.044Z",
+    "time": "2018-07-12T06:17:01.465Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

@@ -16,7 +16,7 @@ class GoodController extends BaseController
     }
 
     /**
-     * @api {get} /good/{good_id} 获取商品详情
+     * @api {get} /good 获取商品详情
      * @apiName 获取商品详情
      * @apiGroup Good
      *
@@ -28,7 +28,8 @@ class GoodController extends BaseController
      *
      *
      */
-    public function index($good_id = 1) {
+    public function index(Request $request) {
+        $good_id = $request->get('good_id',1);
         $goods = $this->goods->getGood($good_id);
         return $goods;
     }

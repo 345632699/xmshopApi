@@ -33,17 +33,17 @@ $api->version('v1', function ($api) {
         });
 
         //商品路由
-        $api->get('good/{good_id}','Goods\GoodController@index');
+        $api->get('good','Goods\GoodController@index');
 
         //收货地址
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
             $api->get('address','Address\AddressController@index');
-            $api->get('address/{id}','Address\AddressController@get');
+            $api->get('address','Address\AddressController@get');
             $api->post('address/create','Address\AddressController@create');
-            $api->post('address/{id}/edit','Address\AddressController@edit');
+            $api->post('address/edit','Address\AddressController@edit');
 
-            $api->get('order/list/{order_status}','Order\OrderController@getOrderList');
-            $api->get('order/get/{id}','Order\OrderController@get');
+            $api->get('order/list','Order\OrderController@getOrderList');
+            $api->get('order/get','Order\OrderController@get');
             $api->post('order/create','Order\OrderController@create');
 
         });

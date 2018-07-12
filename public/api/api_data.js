@@ -111,7 +111,7 @@ define({ "api": [
   },
   {
     "type": "post",
-    "url": "/address/{id}/edit",
+    "url": "/address/edit",
     "title": "编辑收货地址",
     "name": "AddressEdit",
     "group": "Address",
@@ -131,6 +131,13 @@ define({ "api": [
     "parameter": {
       "fields": {
         "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "address_id",
+            "description": "<p>地址ID</p>"
+          },
           {
             "group": "Parameter",
             "type": "string",
@@ -222,13 +229,13 @@ define({ "api": [
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/{id}/edit"
+        "url": "http://xmshop.mqphp.com/api/address/edit"
       }
     ]
   },
   {
     "type": "get",
-    "url": "/address/get/{id}",
+    "url": "/address/get",
     "title": "获取地址详情",
     "name": "AddressGet_______",
     "group": "Address",
@@ -250,9 +257,9 @@ define({ "api": [
         "Parameter": [
           {
             "group": "Parameter",
-            "type": "string",
+            "type": "int",
             "optional": false,
-            "field": "id",
+            "field": "address_id",
             "description": "<p>地址id</p>"
           }
         ]
@@ -290,7 +297,7 @@ define({ "api": [
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/get/{id}"
+        "url": "http://xmshop.mqphp.com/api/address/get"
       }
     ]
   },
@@ -386,7 +393,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/good/{good_id}",
+    "url": "/good",
     "title": "获取商品详情",
     "name": "______",
     "group": "Good",
@@ -435,7 +442,7 @@ define({ "api": [
     "groupTitle": "Good",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/good/{good_id}"
+        "url": "http://xmshop.mqphp.com/api/good"
       }
     ]
   },
@@ -579,7 +586,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/order/get/{id}",
+    "url": "/order/get",
     "title": "获取订单详情",
     "name": "OrderDetail",
     "group": "Order",
@@ -603,8 +610,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "order_header_id",
-            "description": ""
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
           }
         ]
       }
@@ -641,13 +648,13 @@ define({ "api": [
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/get/{id}"
+        "url": "http://xmshop.mqphp.com/api/order/get"
       }
     ]
   },
   {
     "type": "get",
-    "url": "/order/list/{order_status}",
+    "url": "/order/list",
     "title": "根据订单状态获取订单列表",
     "name": "OrderList",
     "group": "Order",
@@ -828,7 +835,7 @@ define({ "api": [
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/list/{order_status}"
+        "url": "http://xmshop.mqphp.com/api/order/list"
       }
     ]
   }

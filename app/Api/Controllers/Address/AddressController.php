@@ -43,13 +43,13 @@ class AddressController extends BaseController
 
 
     /**
-     * @api {get} /address/get/{id} 获取地址详情
+     * @api {get} /address/get 获取地址详情
      * @apiName AddressGet-获取地址详情
      * @apiGroup Address
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
-     * @apiParam {string} id 地址id
+     * @apiParam {int} address_id 地址id
      *
      * @apiSuccess {Array} data 返回的数据结构体
      * @apiSuccess {Number} status  1 执行成功 0 为执行失败
@@ -57,8 +57,12 @@ class AddressController extends BaseController
      *
      *
      */
-    public function get($id) {
-        $address = Contact::find($id)->first();
+    public function get(Request $request) {
+        $address_id = $request->address_id;
+        if (!$address_id){
+            return response_format(['err_msg'=>'地址ID 不能为空']);
+        }
+        $address = Contact::find($address_id)->first();
         return response_format($address);
     }
 
@@ -94,12 +98,13 @@ class AddressController extends BaseController
     }
 
     /**
-     * @api {post} /address/{id}/edit 编辑收货地址
+     * @api {post} /address/edit 编辑收货地址
      * @apiName AddressEdit
      * @apiGroup Address
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
+     * @apiParam {int} address_id 地址ID
      * @apiParam {string} name 用户姓名
      * @apiParam {number} phone_num 手机号码
      * @apiParam {string} province 省
@@ -124,9 +129,10 @@ class AddressController extends BaseController
      *
      */
 
-    public function edit($id,Request $request){
+    public function edit(Request $request){
+        $address_id = $request->address_id;
         $input = $request->input();
-        $address = Contact::find($id);
+        $address = Contact::find($address_id);
         $res = $address->update($input);
         if ($res) {
             return response_format([],1,'更新成功');

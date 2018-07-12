@@ -38,21 +38,25 @@ class OrderController extends BaseController
     }
 
     /**
-     * @api {get} /order/get/{id} 获取订单详情
+     * @api {get} /order/get 获取订单详情
      * @apiName OrderDetail
      * @apiGroup Order
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
-     * @apiParam {int} order_header_id
+     * @apiParam {int} order_id 订单ID
      *
      * @apiSuccess {Array} data 返回的数据结构体
      * @apiSuccess {Number} status  1 执行成功 0 为执行失败
      * @apiSuccess {string} msg 执行信息提示
      *
      */
-    public function get($id){
-        $data = $this->order->getOrderDetail($id);
+    public function get(Request $request){
+        $order_id = $request->order_id;
+        if (!isset($order_id)){
+            return response_format(['err_msg'=>"订单ID不能为空"]);
+        }
+        $data = $this->order->getOrderDetail($order_id);
         return response_format($data);
     }
 
@@ -62,7 +66,7 @@ class OrderController extends BaseController
      * 订单状态，ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
      */
     /**
-     * @api {get} /order/list/{order_status} 根据订单状态获取订单列表
+     * @api {get} /order/list 根据订单状态获取订单列表
      * @apiName OrderList
      * @apiGroup Order
      *
@@ -92,7 +96,8 @@ class OrderController extends BaseController
      * @apiSuccess {string} robot_id 关联机器人ID
      *
      */
-    public function getOrderList($order_status){
+    public function getOrderList(Request $request){
+        $order_status = $request->get('order_status',-1);
         $order_list = $this->order->getOrderList($order_status);
         return response_format($order_list);
     }
