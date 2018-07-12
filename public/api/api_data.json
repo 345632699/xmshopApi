@@ -105,7 +105,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/address/create"
+        "url": "http://xmshop.mqphp.com/api/address/create"
       }
     ]
   },
@@ -222,7 +222,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/address/{id}/edit"
+        "url": "http://xmshop.mqphp.com/api/address/{id}/edit"
       }
     ]
   },
@@ -290,7 +290,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/address/get/{id}"
+        "url": "http://xmshop.mqphp.com/api/address/get/{id}"
       }
     ]
   },
@@ -352,7 +352,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/address"
+        "url": "http://xmshop.mqphp.com/api/address"
       }
     ]
   },
@@ -380,7 +380,7 @@
     "groupTitle": "Client",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/client"
+        "url": "http://xmshop.mqphp.com/api/client"
       }
     ]
   },
@@ -435,7 +435,7 @@
     "groupTitle": "Good",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/good/{good_id}"
+        "url": "http://xmshop.mqphp.com/api/good/{good_id}"
       }
     ]
   },
@@ -573,7 +573,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/order/create"
+        "url": "http://xmshop.mqphp.com/api/order/create"
       }
     ]
   },
@@ -641,7 +641,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/order/get/{id}"
+        "url": "http://xmshop.mqphp.com/api/order/get/{id}"
       }
     ]
   },
@@ -828,7 +828,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://www.xm.com/api/order/list/{order_status}"
+        "url": "http://xmshop.mqphp.com/api/order/list/{order_status}"
       }
     ]
   }

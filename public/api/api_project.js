@@ -3,8 +3,8 @@ define({
   "version": "0.3.0",
   "description": "apidoc example project",
   "title": "Custom apiDoc browser title",
-  "url": "http://www.xm.com/api",
-  "sampleUrl": "http://www.xm.com/api",
+  "url": "http://xmshop.mqphp.com/api",
+  "sampleUrl": "http://xmshop.mqphp.com/api",
   "template": {
     "withCompare": true,
     "withGenerator": true
@@ -13,7 +13,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-07-12T04:07:58.307Z",
+    "time": "2018-07-12T04:13:03.044Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }
