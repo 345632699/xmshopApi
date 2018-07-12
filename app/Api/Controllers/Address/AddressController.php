@@ -16,12 +16,47 @@ class AddressController extends BaseController
         $this->client = $client;
     }
 
-    public function index() {
+    /**
+     * @api {get} /address 获取地址列表
+     * @apiName AddressList-获取地址列表
+     * @apiGroup Address
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     * @apiSuccessExample Success-Response:
+     *     HTTP/1.1 200 OK
+     *     {
+     *     }
+     *
+     */
+    public function index(Request $request) {
+        $limit = $request->get('limit',5);
         $client_id = session('client.id');
-        $address_list = Contact::where('client_id',$client_id)->get()->toArray();
+        $address_list = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
         return response_format($address_list);
     }
 
+
+    /**
+     * @api {get} /address/get/{id} 获取地址详情
+     * @apiName AddressGet-获取地址详情
+     * @apiGroup Address
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {string} id 地址id
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     *
+     */
     public function get($id) {
         $address = Contact::find($id)->first();
         return response_format($address);
@@ -42,15 +77,9 @@ class AddressController extends BaseController
      * @apiParam {string} address 详细地址 不能为空
      * @apiParam {string} default_flag 是否默认 Y 默认 N 不默认
      *
-     * @apiSuccess {String} firstname Firstname of the User.
-     * @apiSuccess {String} lastname  Lastname of the User.
-     *
-     * @apiSuccessExample Success-Response:
-     *     HTTP/1.1 200 OK
-     *     {
-     *       "firstname": "John",
-     *       "lastname": "Doe"
-     *     }
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
      *
      */
     public function create(Request $request){

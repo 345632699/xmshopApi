@@ -33,7 +33,7 @@ $api->version('v1', function ($api) {
         });
 
         //商品路由
-        $api->get('good','Goods\GoodController@index');
+        $api->get('good/{good_id}','Goods\GoodController@index');
 
         //收货地址
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {

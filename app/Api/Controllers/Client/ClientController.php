@@ -18,6 +18,14 @@ class ClientController extends BaseController
         $this->client = $client;
     }
 
+    /**
+     * @api {get} /client 用户详情
+     * @apiName 用户详情
+     * @apiGroup Client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     */
     public function index() {
         $client_id = $this->client->getUserByOpenId()->id;
         $client = Client::select('nick_name','clients.phone_num','avatar_url','amount','freezing_amount')

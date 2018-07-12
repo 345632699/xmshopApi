@@ -49,4 +49,9 @@ class GoodRepository implements GoodRepositoryInterface
             return response_format([],0,$e->getMessage());
         }
     }
+
+    public function find($good_id)
+    {
+        return Good::findOrFail($good_id)->first();
+    }
 }

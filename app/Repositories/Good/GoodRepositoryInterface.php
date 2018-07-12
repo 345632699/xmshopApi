@@ -16,4 +16,6 @@ interface GoodRepositoryInterface {
      * 获取商品详情
      */
     public function getGood($good_id);
+
+    public function find($good_id);
 }

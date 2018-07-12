@@ -20,6 +20,7 @@ class OrderDetail extends Model
         'quantity',
         'unit_price',
         'unit_price',
+        'total_price',
         'updated_at',
         'created_at'
     ];
