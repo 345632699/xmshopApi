@@ -62,7 +62,7 @@ class AddressController extends BaseController
         if (!$address_id){
             return response_format(['err_msg'=>'地址ID 不能为空']);
         }
-        $address = Contact::find($address_id)->first();
+        $address = Contact::find($address_id);
         return response_format($address);
     }
 
