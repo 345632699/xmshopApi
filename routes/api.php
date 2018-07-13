@@ -37,7 +37,7 @@ $api->version('v1', function ($api) {
 
         //收货地址
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
-            $api->get('address','Address\AddressController@index');
+            $api->get('address/list','Address\AddressController@index');
             $api->get('address','Address\AddressController@get');
             $api->post('address/create','Address\AddressController@create');
             $api->post('address/edit','Address\AddressController@edit');
