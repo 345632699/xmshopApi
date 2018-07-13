@@ -47,4 +47,22 @@ class ClientController extends BaseController
 
     }
 
+    /**
+     * @api {get} /client/check 是否绑定机器人
+     * @apiName 是否绑定机器人
+     * @apiGroup Client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     */
+    public function checkBind(){
+        $client_id = $this->client->getUserByOpenId()->id;
+        $count = \DB::table('client_link_mapping')->where('child_client_id',$client_id)->count();
+        if ($count){
+            return response_format(['has_bind_robot'=>1]);
+        }else{
+            return response_format(['has_bind_robot'=>0],0);
+        }
+    }
+
 }

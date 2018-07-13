@@ -53,6 +53,7 @@ $api->version('v1', function ($api) {
         //用户中心
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
             $api->get('client','Client\ClientController@index');
+            $api->get('client/check','Client\ClientController@checkBind');
         });
     });
 });

@@ -461,6 +461,34 @@
   },
   {
     "type": "get",
+    "url": "/client/check",
+    "title": "是否绑定机器人",
+    "name": "_______",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "http://xmshop.mqphp.com/api/client/check"
+      }
+    ]
+  },
+  {
+    "type": "get",
     "url": "/good",
     "title": "获取商品详情",
     "name": "______",
