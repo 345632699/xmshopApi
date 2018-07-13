@@ -36,7 +36,8 @@ class AddressController extends BaseController
      */
     public function index(Request $request) {
         $limit = $request->get('limit',5);
-        $client_id = session('client.id');
+        $client = $this->client->getUserByOpenId();
+        $client_id = $client->id;
         $address_list = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
         return response_format($address_list);
     }
