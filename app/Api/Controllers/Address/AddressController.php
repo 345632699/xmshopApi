@@ -17,7 +17,7 @@ class AddressController extends BaseController
     }
 
     /**
-     * @api {get} /address 获取地址列表
+     * @api {get} /address/list 获取地址列表
      * @apiName AddressList-获取地址列表
      * @apiGroup Address
      *
@@ -131,13 +131,51 @@ class AddressController extends BaseController
 
     public function edit(Request $request){
         $address_id = $request->address_id;
+        $client_id = session('client.id');
+        if ($request->default_flag == 'Y'){
+            Contact::where('client_id',$client_id)->update(['default_flag'=>"N"]);
+        }
         $input = $request->input();
         $address = Contact::find($address_id);
-        $res = $address->update($input);
+        if ($address){
+            $res = $address->update($input);
+            $msg = "更新成功";
+        } else{
+            $res = false;
+            $msg = "地址信息不存在";
+        }
+
         if ($res) {
-            return response_format([],1,'更新成功');
+            return response_format([],1,$msg);
         }else{
-            return response_format([],0,'暂无更新');
+            return response_format([],0,$msg);
+        }
+    }
+
+    /**
+     * @api {get} /address/delete 删除地址
+     * @apiName AddressDelete-删除地址
+     * @apiGroup Address
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} address_id 地址id
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     *
+     */
+    public function delete(Request $request){
+        $address_id = $request->address_id;
+        $client_id = session('client.id');
+        try{
+            $address = Contact::where(['uid'=>$address_id,'client_id'=>$client_id])->first();
+            $address->delete();
+            return response_format([]);
+        }catch (\PDOException $e){
+            return response_format([],0,"数据查询出错",400);
         }
     }
 

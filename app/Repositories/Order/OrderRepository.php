@@ -16,6 +16,7 @@ use App\Model\Invoice;
 use App\Model\Order;
 use App\Model\OrderDetail;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Mockery\Exception;
 
@@ -161,5 +162,40 @@ class OrderRepository implements OrderRepositoryInterface
             return $e->getMessage();
         }
 
+    }
+
+    /**
+     * @param $order_id
+     * @param $client_id
+     * @return mixed
+     * 确认收货
+     */
+    public function confirm($order_id, $client_id)
+    {
+        if (is_null($order_id)){
+            return response_format([],0,'缺少order_id参数',400);
+        }
+        try{
+            $orderRes = $deliveryRes = false;
+            DB::beginTransaction();
+            //确保订单是 本人在操作
+            $order = DB::table('order_headers')->where(['uid'=>$order_id,'client_id'=>$client_id,'order_status'=>3]);
+            if ($order){
+                $orderRes = $order->update(['order_status'=>4]);
+            }
+            //已发货 切用户id对上了才可以进行操作
+            $delivery = DB::table('delivery')->where(['order_header_id'=>$order_id,'delivery_status'=>1]);
+            if ($delivery)
+                $deliveryRes = $delivery->update(['delivery_status'=>2]);
+            if ($orderRes && $deliveryRes){
+                DB::commit();
+                return ['status'=>1,'statusCode'=>200,'msg'=>'success'];
+            }else{
+                DB::rollback();
+                return ['status'=>0,'statusCode'=>400,'msg'=>'订单不存在'];
+            }
+        }catch (Exception $e){
+            return ['status'=>0,'statusCode'=>$e->getCode(),'msg'=>$e->getMessage()];
+        }
     }
 }

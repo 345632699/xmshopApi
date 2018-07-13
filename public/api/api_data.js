@@ -110,6 +110,74 @@ define({ "api": [
     ]
   },
   {
+    "type": "get",
+    "url": "/address/delete",
+    "title": "删除地址",
+    "name": "AddressDelete_____",
+    "group": "Address",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "address_id",
+            "description": "<p>地址id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回的数据结构体</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 执行成功 0 为执行失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>执行信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Address/AddressController.php",
+    "groupTitle": "Address",
+    "sampleRequest": [
+      {
+        "url": "http://xmshop.mqphp.com/api/address/delete"
+      }
+    ]
+  },
+  {
     "type": "post",
     "url": "/address/edit",
     "title": "编辑收货地址",
@@ -303,7 +371,7 @@ define({ "api": [
   },
   {
     "type": "get",
-    "url": "/address",
+    "url": "/address/list",
     "title": "获取地址列表",
     "name": "AddressList_______",
     "group": "Address",
@@ -359,7 +427,7 @@ define({ "api": [
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address"
+        "url": "http://xmshop.mqphp.com/api/address/list"
       }
     ]
   },
@@ -443,6 +511,74 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "http://xmshop.mqphp.com/api/good"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/order/confirm",
+    "title": "确认收货",
+    "name": "OrderConfirm",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回的数据结构体</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 执行成功 0 为执行失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>执行信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Order/OrderController.php",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://xmshop.mqphp.com/api/order/confirm"
       }
     ]
   },

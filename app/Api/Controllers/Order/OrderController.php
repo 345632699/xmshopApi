@@ -1,17 +1,10 @@
 <?php
 
 namespace App\Api\Controllers\Order;
-
 use App\Api\Controllers\BaseController;
-use App\Model\Contact;
-use App\Model\Delivery;
-use App\Model\Good;
-use App\Model\Order;
-use App\Model\OrderDetail;
 use App\Repositories\Client\ClientRepository;
 use App\Repositories\Order\OrderRepository;
 use App\Repositories\Pay\PayRepository;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Mockery\Exception;
 
@@ -169,6 +162,28 @@ class OrderController extends BaseController
         }
     }
 
+    /**
+     * @api {post} /order/confirm 确认收货
+     * @apiName OrderConfirm
+     * @apiGroup Order
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} order_id 订单ID
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     *
+     */
+    public function confirmReceipt(Request $request){
+        $order_id = intval($request->order_id);
+        $client_id = session('client.id');
+        $res = $this->order->confirm($order_id,$client_id);
+        return response_format([],$res['status'],$res['msg'],$res['statusCode']);
+    }
+
     public function getPayJssdk($order_header_id,$client,$parent_id){
         $pay = $this->pay->createPayBillByOrder($order_header_id,$client,$parent_id);
         if ($pay){
@@ -178,4 +193,5 @@ class OrderController extends BaseController
             return response_format([],0,"订单生成失败");
         }
     }
+
 }

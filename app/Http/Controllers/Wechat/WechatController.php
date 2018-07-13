@@ -38,7 +38,7 @@ class WechatController extends Controller
         }
         if (isset($client->id)){
             $token = JWTAuth::fromUser($client);
-            return response_format(['token'=>$token]);
+            return response_format(['token'=>$token,'client_id'=>$client->id]);
         }else{
             return response_format([],0,'授权出错',401);
         }

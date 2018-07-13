@@ -30,4 +30,12 @@ interface OrderRepositoryInterface {
     public function getOrderList($order_status);
 
     public function getOrderDetail($order_id);
+
+    /**
+     * @param $order_id
+     * @param $client_id
+     * @return mixed
+     * 确认收货
+     */
+    public function confirm($order_id,$client_id);
 }

@@ -41,10 +41,12 @@ $api->version('v1', function ($api) {
             $api->get('address/get','Address\AddressController@get');
             $api->post('address/create','Address\AddressController@create');
             $api->post('address/edit','Address\AddressController@edit');
+            $api->post('address/delete','Address\AddressController@delete');
 
             $api->get('order/list','Order\OrderController@getOrderList');
             $api->get('order/get','Order\OrderController@get');
             $api->post('order/create','Order\OrderController@create');
+            $api->post('order/confirm','Order\OrderController@confirmReceipt');
 
         });
 
