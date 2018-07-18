@@ -139,9 +139,12 @@ class OrderRepository implements OrderRepositoryInterface
                 case $order_status == 8:
                     $order->order_status_name = "已退货";
                     break;
+                case $order_status == 9:
+                    $order->order_status_name = "已取消";
+                    break;
             }
             // 0-预付款，1-货到付款
-            if ($order->order_type){
+            if (!$order->order_type){
                 $order->order_type_name = '微信支付';
             }else{
                 $order->order_type_name = '货到付款';

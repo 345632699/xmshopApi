@@ -20,9 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 //...
-Route::group(['middleware' => ['web', 'wechat.oauth']], function () {
+Route::group(['middleware' => ['web']], function () {
     Route::get('/user',"HomeController@getToken");
+    Route::resource('order','Order\OrderController');
+
 });
 
 Route::any('getUnionId','Wechat\WechatController@mini');
+
 

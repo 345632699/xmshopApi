@@ -5,6 +5,7 @@ namespace App\Api\Controllers\Client;
 use App\Api\Controllers\BaseController;
 use App\Model\Client;
 use App\Model\Delivery;
+use App\Model\Order;
 use App\Repositories\Client\ClientRepository;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,11 @@ class ClientController extends BaseController
                         ->Where('default_flag','Y')
                         ->first();
         $client->default_address_id = $address_id;
+
+        //待支付
+        $wait_pay = Order::where(['client_id'=>$client_id,'order_status'=>0])->count();
+        $client->wait_pay = intval($wait_pay);
+
         return response_format($client);
     }
 
