@@ -65,13 +65,13 @@ class OrderController extends BaseController
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
-     * @apiParam {int} order_status 0-未支付，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 -1 全部
+     * @apiParam {int} order_status 0-未支付，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消 -1 全部
      * @apiParam {int} limit 每页显示条数
      *
      * @apiSuccess {int} order_id 订单ID
      * @apiSuccess {string} order_number 商品订单
      * @apiSuccess {int} order_type 0-预付款，1-货到付款
-     * @apiSuccess {int} order_status ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
+     * @apiSuccess {int} order_status ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消
      * @apiSuccess {datetime} order_date 下单时间
      * @apiSuccess {datetime} pay_date 支付时间
      * @apiSuccess {int} contract_id 收货地址ID
@@ -108,10 +108,12 @@ class OrderController extends BaseController
      * @apiParam {string} color 商品颜色
      * @apiParam {string} size 商品尺寸大小
      * @apiParam {int} quantity 商品数量
+     * @apiParam {string} buyer_msg 买家留言
      *
      * @apiParam {int} invoice_type 发票类型 0-个人，1-公司 open_invoice_flag为Y时必填
      * @apiParam {string} detail 发票明细（选填）
      * @apiParam {string} email 收票人邮箱（选填）
+     * @apiParam {int} phone_num 收票人电话（必填）
      * @apiParam {string} title 发票抬头 open_invoice_flag为Y时必填
      * @apiParam {string} tax_code 发票税号 invoice_type为1时必填
      *
@@ -181,6 +183,28 @@ class OrderController extends BaseController
         $order_id = intval($request->order_id);
         $client_id = session('client.id');
         $res = $this->order->confirm($order_id,$client_id);
+        return response_format([],$res['status'],$res['msg'],$res['statusCode']);
+    }
+
+    /**
+     * @api {post} /order/cancel 取消订单
+     * @apiName OrderCancel
+     * @apiGroup Order
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} order_id 订单ID
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     *
+     */
+    public function cancelOrder(Request $request){
+        $order_id = intval($request->order_id);
+        $client_id = session('client.id');
+        $res = $this->order->cancel($order_id,$client_id);
         return response_format([],$res['status'],$res['msg'],$res['statusCode']);
     }
 

@@ -41,6 +41,7 @@ class OrderRepository implements OrderRepositoryInterface
         $good = Good::find($order_line_data['good_id'])->first();
         $order_line_data['color'] = $request->get('color',"白色");
         $order_line_data['size'] = $request->get('size',"17*17*17cm");
+        $order_line_data['buyer_msg'] = $request->get('buyer_msg',"");
         $order_line_data['quantity'] = $request->get('quantity',1);
         $order_line_data['unit_price'] = $good->unit_price;
         $order_line_data['total_price'] = $good->unit_price * $order_line_data['quantity'];
@@ -89,6 +90,7 @@ class OrderRepository implements OrderRepositoryInterface
         //invoice_type 0-个人，1-公司
         $invoice['invoice_type'] = $request->get('invoice_type','0');
         $invoice['detail'] = $request->get('detail','');
+        $invoice['phone_num'] = $request->get('phone_num',null);
         $invoice['amount'] = $total_price;
         $invoice['email'] = $request->get('email','');
         $invoice['title'] = $request->get('title','');
@@ -188,6 +190,38 @@ class OrderRepository implements OrderRepositoryInterface
             if ($delivery)
                 $deliveryRes = $delivery->update(['delivery_status'=>2]);
             if ($orderRes && $deliveryRes){
+                DB::commit();
+                return ['status'=>1,'statusCode'=>200,'msg'=>'success'];
+            }else{
+                DB::rollback();
+                return ['status'=>0,'statusCode'=>400,'msg'=>'订单不存在'];
+            }
+        }catch (Exception $e){
+            return ['status'=>0,'statusCode'=>$e->getCode(),'msg'=>$e->getMessage()];
+        }
+    }
+
+    /**
+     * @param $order_id
+     * @param $client_id
+     * @return mixed
+     * 取消订单
+     */
+    public function cancel($order_id, $client_id)
+    {
+        if (is_null($order_id)){
+            return response_format([],0,'缺少order_id参数',400);
+        }
+        try{
+            $orderRes = $deliveryRes = false;
+            DB::beginTransaction();
+            //确保订单是 本人在操作
+            $order = DB::table('order_headers')->where(['uid'=>$order_id,'client_id'=>$client_id,'order_status'=>0]);
+            if ($order){
+                $orderRes = $order->update(['order_status'=>9]);
+            }
+
+            if ($orderRes){
                 DB::commit();
                 return ['status'=>1,'statusCode'=>200,'msg'=>'success'];
             }else{

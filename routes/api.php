@@ -47,6 +47,7 @@ $api->version('v1', function ($api) {
             $api->get('order/get','Order\OrderController@get');
             $api->post('order/create','Order\OrderController@create');
             $api->post('order/confirm','Order\OrderController@confirmReceipt');
+            $api->post('order/cancel','Order\OrderController@cancelOrder');
 
         });
 
@@ -54,6 +55,8 @@ $api->version('v1', function ($api) {
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
             $api->get('client','Client\ClientController@index');
             $api->get('client/check','Client\ClientController@checkBind');
+
+            $api->post('pay/withdraw_list','Pay\PayController@getWithDrawRecordList');
         });
     });
 });

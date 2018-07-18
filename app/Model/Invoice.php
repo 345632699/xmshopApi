@@ -20,6 +20,7 @@ class Invoice extends Model
         'email',
         'title',
         'tax_code',
+        'phone_num',
         'invoice_date',
         'client_id',
         'order_id',

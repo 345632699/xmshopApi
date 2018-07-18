@@ -38,4 +38,12 @@ interface OrderRepositoryInterface {
      * 确认收货
      */
     public function confirm($order_id,$client_id);
+
+    /**
+     * @param $order_id
+     * @param $client_id
+     * @return mixed
+     * 取消订单
+     */
+    public function cancel($order_id,$client_id);
 }

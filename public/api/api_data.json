@@ -544,6 +544,74 @@
   },
   {
     "type": "post",
+    "url": "/order/cancel",
+    "title": "取消订单",
+    "name": "OrderCancel",
+    "group": "Order",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "order_id",
+            "description": "<p>订单ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回的数据结构体</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 执行成功 0 为执行失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>执行信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Order/OrderController.php",
+    "groupTitle": "Order",
+    "sampleRequest": [
+      {
+        "url": "http://xmshop.mqphp.com/api/order/cancel"
+      }
+    ]
+  },
+  {
+    "type": "post",
     "url": "/order/confirm",
     "title": "确认收货",
     "name": "OrderConfirm",
@@ -676,6 +744,13 @@
           },
           {
             "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "buyer_msg",
+            "description": "<p>买家留言</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "int",
             "optional": false,
             "field": "invoice_type",
@@ -694,6 +769,13 @@
             "optional": false,
             "field": "email",
             "description": "<p>收票人邮箱（选填）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "phone_num",
+            "description": "<p>收票人电话（必填）</p>"
           },
           {
             "group": "Parameter",
@@ -843,7 +925,7 @@
             "type": "int",
             "optional": false,
             "field": "order_status",
-            "description": "<p>0-未支付，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 -1 全部</p>"
+            "description": "<p>0-未支付，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消 -1 全部</p>"
           },
           {
             "group": "Parameter",
@@ -884,7 +966,7 @@
             "type": "int",
             "optional": false,
             "field": "order_status",
-            "description": "<p>ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货</p>"
+            "description": "<p>ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消</p>"
           },
           {
             "group": "Success 200",
@@ -1000,6 +1082,81 @@
     "sampleRequest": [
       {
         "url": "http://xmshop.mqphp.com/api/order/list"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/pay/withdraw_list",
+    "title": "取消订单",
+    "name": "PayWithdraw",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>1 获取个人的  2 获取所有的</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "status",
+            "description": "<p>0 提现失败 1 提现成功 2 提现中</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回的数据结构体</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 执行成功 0 为执行失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>执行信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Pay/PayController.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "http://xmshop.mqphp.com/api/pay/withdraw_list"
       }
     ]
   }

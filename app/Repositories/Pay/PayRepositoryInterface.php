@@ -27,4 +27,12 @@ interface PayRepositoryInterface {
      * 根据order_header_id生成支付订单
      */
     public function createPayBillByOrder($order_header_id,$client,$parent_id);
+
+    /**
+     * @param $withdraw_id 提现的ID
+     * @param $client 用户信息
+     * @param $amount 用户的金额
+     * @return mixed
+     */
+    public function withDraw($withdraw_id,$client,$amount);
 }
