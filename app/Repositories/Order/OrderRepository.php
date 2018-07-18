@@ -112,34 +112,34 @@ class OrderRepository implements OrderRepositoryInterface
             //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
             $order_status = $order->order_status;
             switch ($order_status){
-                case $order_status == 0:
+                case 0:
                     $order->order_status_name = "未支付";
                     break;
-                case $order_status == 1:
+                case 1:
                     $order->order_status_name = "已支付";
                     break;
-                case $order_status == 2:
+                case 2:
                     $order->order_status_name = "待发货";
                     break;
-                case $order_status == 3:
+                case 3:
                     $order->order_status_name = "已发货";
                     break;
-                case $order_status == 4:
+                case 4:
                     $order->order_status_name = "已完成";
                     break;
-                case $order_status == 5:
+                case 5:
                     $order->order_status_name = "异常";
                     break;
-                case $order_status == 6:
+                case 6:
                     $order->order_status_name = "申请退货";
                     break;
-                case $order_status == 7:
+                case 7:
                     $order->order_status_name = "确认退货";
                     break;
-                case $order_status == 8:
+                case 8:
                     $order->order_status_name = "已退货";
                     break;
-                case $order_status == 9:
+                case 9:
                     $order->order_status_name = "已取消";
                     break;
             }
