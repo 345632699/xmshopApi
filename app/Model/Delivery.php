@@ -18,6 +18,7 @@ class Delivery extends Model
         'creation_date',
         'delivery_date',
         'delivery_status',
+        'address',
         'updated_at',
         'created_at'
     ];

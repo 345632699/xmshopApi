@@ -91,7 +91,8 @@ class OrderController extends BaseController
      */
     public function getOrderList(Request $request){
         $order_status = $request->get('order_status',-1);
-        $order_list = $this->order->getOrderList($order_status);
+        $limit = $request->limit;
+        $order_list = $this->order->getOrderList($order_status,$limit);
         return response_format($order_list);
     }
 

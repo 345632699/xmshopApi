@@ -12,68 +12,45 @@
                             <thead>
                             <tr>
                                 <th>序号</th>
-                                <th>姓名</th>
-                                <th>地址</th>
-                                <th>电话</th>
-                                <th>订单号</th>
-                                <th>状态</th>
-                                <th>物流信息</th>
+                                <th>下单日期</th>
+                                <th>订单编号</th>
+                                <th>订单类型</th>
+                                <th>商品名称</th>
+                                <th>数量</th>
+                                <th>订单总价</th>
+                                <th>昵称</th>
+                                <th>发票信息</th>
+                                <th>订单状态</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($orderList as $key=>$item)
-                                <tr class=" @if($item->status == 5)
-                                        active
-                                        @elseif($item->status == 4)
-                                        danger
-                                        @elseif($item->status == 3)
-                                        success
-                                        @elseif($item->status == 2)
-                                        active
-                                        @elseif($item->status == 1)
-                                        warning
-                                        @else
-                                        active
-                                        @endif
-                                        ">
+                                <tr>
                                     <td>{{ $key+1 }}</td>
+                                    <td>{{ $item->created_at }}</td>
+                                    <td>
+                                        <a href="{{ route('order.show',$item->uid) }}">
+                                            {{ $item->order_number }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ $item->order_type > 0 ? "货到付款" : "预付款" }}
+                                    </td>
                                     <td>{{ $item->name }}</td>
-                                    <td style="text-align: left">{{ $item->address }}</td>
-                                    <td>{{ $item->mobile }}</td>
-                                    <td>{{ $item->pay_order_sn }}</td>
+                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->quantity * $item->unit_price  }}</td>
                                     <td>
-                                        @if($item->status == 5)
-                                            已签收
-                                        @elseif($item->status == 4)
-                                            已退货
-                                        @elseif($item->status == 3)
-                                            已发货
-                                        @elseif($item->status == 2)
-                                            已取消
-                                        @elseif($item->status == 1)
-                                            已支付
-                                        @elseif($item->status == 6)
-                                            退货中
-                                        @else
-                                            未支付
-                                        @endif
+                                        {{ $item->nick_name }}
                                     </td>
                                     <td>
-                                        @if($item->tracking != null)
-                                            {{ $item->tracking }}
-                                        @else
-                                            <button class="btn btn-primary" id="{{ $item->id }}" onclick="add_tracking_btn(this)">添加物流</button>
-                                        @endif
+                                        {{ 'N' == $item->open_invoice_flag ? '无' : "有" }}
                                     </td>
                                     <td>
-                                        @if($item->status == 6)
-                                            <button class="btn btn-danger" id="{{ $item->id }}" onclick="refund_btn(this)">确认退货</button>
-                                        @elseif($item->status == 1)
-                                            <button class="btn btn-success" id="{{ $item->id }}" onclick="confirm_btn(this)">确认发货</button>
-                                        @elseif($item->status == 6)
-                                            <button class="btn btn-primary" id="{{ $item->id }}" onclick="add_tracking_btn(this)">更新物流</button>
-                                        @endif
+                                        {{ $item->order_status_name }}
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('order.eidt-delivery',$item->uid) }}" class="btn btn-default">发货</a>
                                     </td>
                                 </tr>
                             @endforeach

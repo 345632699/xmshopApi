@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                        <a href="{{ route('order.index') }}">查看所有订单</a>
                 </div>
             </div>
         </div>

@@ -53,6 +53,8 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $delivery_data['order_header_id'] = $order_header_id;
         $delivery_data['delivery_contact_id'] = $address_id;
+        $contract = Contact::find($address_id)->first();
+        $delivery_data['address'] = $contract->name . ' ' . $contract->province.$contract->city.$contract->area.$contract->address . " " .$contract->phone_num;
         $delivery = Delivery::create($delivery_data);
         return $delivery;
     }
@@ -105,8 +107,9 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrderDetail($order_id)
     {
         try{
-            $order = Order::select('order_headers.*','color','quantity','size','unit_price','good_id')
+            $order = Order::select('order_headers.*','color','quantity','size','unit_price','good_id','nick_name','buyer_msg')
                 ->leftJoin('order_lines as ol','order_headers.uid','=','ol.header_id')
+                ->leftJoin('clients','clients.id','=','order_headers.client_id')
                 ->where('order_headers.uid',$order_id)->first();
 
             //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
@@ -153,7 +156,12 @@ class OrderRepository implements OrderRepositoryInterface
 
             $good = Good::find($order->good_id);
             $address = Contact::where('uid',$order->contract_id)->first();
-            $delivery = Delivery::where('order_header_id',$order->uid)->first();
+            $delivery = Delivery::select('delivery_products.product_id','delivery.*')
+                                ->leftJoin('delivery_products','delivery_id','=','delivery.uid')
+                                ->where('order_header_id',$order->uid)->first();
+            $product_ids = Delivery::select('delivery_products.product_id')
+                ->rightJoin('delivery_products','delivery_id','=','delivery.uid')
+                ->where('order_header_id',$order->uid)->pluck('product_id')->toArray();
             $invoice = \DB::table('invoice_record')->where('order_id',$order->uid)->first();
             if (!$invoice)
                 $invoice = [];
@@ -162,6 +170,7 @@ class OrderRepository implements OrderRepositoryInterface
             $data['address'] = $address;
             $data['delivery'] = $delivery;
             $data['invoice'] = $invoice;
+            $data['product_ids'] = $product_ids;
             return $data;
         }catch (Exception $e){
             return $e->getMessage();
