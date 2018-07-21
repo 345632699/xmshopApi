@@ -152,6 +152,8 @@ class PayController extends BaseController
             return response_format($list);
         }else{
             $list = \DB::table('withdraw_record')
+                ->select('withdraw_record.*','clients.nick_name','clients.phone_num')
+                ->leftJoin('clients','clients.id','=','withdraw_record.client_id')
                 ->where('status',1)
                 ->orderBy('uid','desc')
                 ->limit(8)
