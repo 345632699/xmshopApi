@@ -790,6 +790,13 @@ define({ "api": [
             "optional": false,
             "field": "tax_code",
             "description": "<p>发票税号 invoice_type为1时必填</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "parent_id",
+            "description": "<p>推广人</p>"
           }
         ]
       }

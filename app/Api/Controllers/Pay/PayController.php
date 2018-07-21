@@ -145,13 +145,16 @@ class PayController extends BaseController
             }else{
                 $where['client_id'] = $client_id;
             }
-            $list = \DB::table('withdraw_record')->where($where)->paginate($limit);
+            $list = \DB::table('withdraw_record')
+                        ->select('withdraw_record.*','clients.nick_name','clients.phone_num')
+                        ->leftJoin('clients','clients.id','=','withdraw_record.client_id')
+                        ->where($where)->paginate($limit);
             return response_format($list);
         }else{
             $list = \DB::table('withdraw_record')
                 ->where('status',1)
                 ->orderBy('uid','desc')
-                ->limit(10)
+                ->limit(8)
                 ->get()->toArray();
             return response_format($list);
         }

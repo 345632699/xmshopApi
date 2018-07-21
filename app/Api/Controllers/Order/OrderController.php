@@ -118,6 +118,8 @@ class OrderController extends BaseController
      * @apiParam {string} title 发票抬头 open_invoice_flag为Y时必填
      * @apiParam {string} tax_code 发票税号 invoice_type为1时必填
      *
+     * @apiParam {int} parent_id 推广人
+     *
      * @apiSuccess {Array} data 返回的数据结构体
      * @apiSuccess {Number} status  1 执行成功 0 为执行失败
      * @apiSuccess {string} msg 执行信息提示
