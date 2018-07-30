@@ -54,7 +54,10 @@ class OrderRepository implements OrderRepositoryInterface
         $delivery_data['order_header_id'] = $order_header_id;
         $delivery_data['delivery_contact_id'] = $address_id;
         $contract = Contact::find($address_id);
-        $delivery_data['address'] = $contract->name . ' ' . $contract->province.$contract->city.$contract->area.$contract->address . " " .$contract->phone_num;
+        $delivery_data['address'] = '';
+        if (!$contract){
+            $delivery_data['address'] = $contract->name . ' ' . $contract->province.$contract->city.$contract->area.$contract->address . " " .$contract->phone_num;
+        }
         $delivery = Delivery::create($delivery_data);
         return $delivery;
     }
