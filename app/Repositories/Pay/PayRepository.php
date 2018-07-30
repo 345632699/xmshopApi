@@ -25,11 +25,13 @@ class PayRepository implements PayRepositoryInterface
         $payBill['out_trade_no'] = $pay['pay_order_number'];
         $payBill['total_fee'] = $pay['total_price'];
         $payBill['spbill_create_ip'] = '';
-        $payBill['notify_url'] = '';
+        $payBill['notify_url'] = 'https://wxapp.honeybot.cn/api/pay/notify';
         $payBill['trade_type'] = 'JSAPI';
         $payBill['openid'] = $open_id;
-        dd($app->jssdk->sdkConfig("wx201411102639507cbf6ffd8b0779950874"));
         $result = $app->order->unify($payBill);
+        $prepay_id =  $result['prepay_id'];
+        $wxpayJssdkConfig = $app->jssdk->sdkConfig($prepay_id);
+        return $wxpayJssdkConfig;
     }
 
     public function createPayBillByOrder($order_header_id, $client,$parent_id)
