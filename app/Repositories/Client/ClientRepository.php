@@ -102,4 +102,14 @@ class ClientRepository implements ClientRepositoryInterface
         $node['updated_at'] = Carbon::now();
         \DB::table('client_link_treepaths')->insert($node);
     }
+
+    public function checkBind($client_id)
+    {
+        $count = \DB::table('client_link_mapping')->where('child_client_id',$client_id)->count();
+        if ($count){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }

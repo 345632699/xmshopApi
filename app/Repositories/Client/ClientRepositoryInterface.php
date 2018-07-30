@@ -24,4 +24,6 @@ interface ClientRepositoryInterface {
      * 更新叶子节点信息
      */
     public function updateTreeNode($client_id,$parent_id);
+
+    public function checkBind($client_id);
 }
