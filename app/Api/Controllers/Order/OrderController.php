@@ -146,7 +146,7 @@ class OrderController extends BaseController
             $order_header_id = $order_header->uid;
             if ($order_header_id) {
                 //添加order详情
-                $order_line = $this->order->createOrderLine($order_header->uid,$request);
+                $order_line = $this->order->createOrderLine($order_header->uid,$request,$parent_id);
 
                 //添加发货记录
                 $delivery = $this->order->createDelivery($order_header->uid,$request->get('address_id'));
@@ -212,10 +212,13 @@ class OrderController extends BaseController
     }
 
     public function getPayJssdk($order_header_id,$client,$parent_id){
+        $resultArr = [];
         $pay = $this->pay->createPayBillByOrder($order_header_id,$client,$parent_id);
         if ($pay){
             $payJssdk = $this->pay->getPayJssdk($pay,$client->open_id);
-            return $payJssdk;
+            $resultArr['payJssdk'] = $payJssdk;
+            $resultArr['payBill'] = $pay;//将订单信息也返回
+            return $resultArr;
         }else{
             return response_format([],0,"订单生成失败");
         }
