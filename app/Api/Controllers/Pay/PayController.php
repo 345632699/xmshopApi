@@ -10,6 +10,7 @@ use App\Repositories\Pay\PayRepository;
 use Carbon\Carbon;
 use EasyWeChat\Payment\Application;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 
 class PayController extends BaseController
@@ -33,49 +34,70 @@ class PayController extends BaseController
         $app = app('wechat.payment');
         $response = $app->handlePaidNotify(function ($message, $fail) {
             // 你的逻辑
-            $out_trade_no = $message->out_trade_no;
-            $pay_bills = \DB::table("pay_bills")->where('pay_order_number',$out_trade_no)->fisrt();
+            Log::info("wechat-notify:".$message['out_trade_no']);
+            file_put_contents(storage_path('logs/pay.log'),"支付单号：".$message['out_trade_no']."支付结果：".$message['return_code'].PHP_EOL,FILE_APPEND);
+            $out_trade_no = $message['out_trade_no'];
+            $pay_bills = \DB::table("pay_bills")->where('pay_order_number',$out_trade_no);
             if (!$pay_bills) { // 如果订单不存在
+                Log::info("========微信支付=========");
+                Log::error('Order not exist.'."订单号：".$out_trade_no);
+                Log::info("========微信支付=========");
                 return 'Order not exist.'; // 告诉微信，我已经处理完了，订单没找到，别再通知我了
             }
-            if ($pay_bills->pay_date) { // 假设订单字段“支付时间”不为空代表已经支付
+            if ($pay_bills->first()->pay_date) { // 假设订单字段“支付时间”不为空代表已经支付
+                Log::info("========微信支付=========");
+                Log::info('单字段“支付时间”不为空代表已经支付.'."订单号：".$out_trade_no);
+                Log::info("========微信支付=========");
                 return true; // 已经支付成功了就不再更新了
             }
 
             if ($message['return_code'] === 'SUCCESS') { // return_code 表示通信状态，不代表支付状态
                 // 用户是否支付成功
                 if (array_get($message, 'result_code') === 'SUCCESS') {
+                    $order = Order::find($pay_bills->first()->order_header_id);
+                    Log::info($order->toJson());
+                    if (!$order){
+                        Log::info("========微信支付=========");
+                        Log::error('订单不存在.'."订单号：".$out_trade_no);
+                        Log::info("========微信支付=========");
+                        return $fail('订单不存在');
+                    }
                     $update = [
                         'pay_date' => Carbon::now(),
                         'pay_status' => 1
                     ];
                     $res = $pay_bills->update($update);
                     if ($res){
-                        $parent_id = $res->parent_id;
-                        $client_id = $res->client_id;
+                        $parent_id = $pay_bills->first()->parent_id;
+                        $client_id = $pay_bills->first()->client_id;
                         $this->client->updateTreeNode($client_id,$parent_id);
                     }
-                    $order = Order::find($pay_bills->order_header_id);
-                    if ($order){
-                        return $fail('订单不存在');
-                    }
+
                     $orderUpdate['pay_date'] = Carbon::now();
                     $orderUpdate['order_status'] = 1;
-                    $order->update($orderUpdate);
-                // 用户支付失败
+                    $orderUpdateres = $order->update($orderUpdate);
+                    Log::info("========微信支付=========");
+                    Log::error('订单支付成功，更新状态:'.$orderUpdateres."订单号：".$out_trade_no);
+                    Log::info("========微信支付=========");
+                    // 用户支付失败
                 } elseif (array_get($message, 'result_code') === 'FAIL') {
                     $update = [
                         'pay_status' => 2
                     ];
                     $res = $pay_bills->update($update);
+                    Log::info("========微信支付=========");
+                    Log::error('订单支付失败.'.$res."订单号：".$out_trade_no);
+                    Log::info("========微信支付=========");
                 }
             } else {
+                Log::info("========微信支付=========");
+                Log::error('通信失败，请稍后再通知我.'."订单号：".$out_trade_no);
+                Log::info("========微信支付=========");
                 return $fail('通信失败，请稍后再通知我');
             }
-
+            file_put_contents(storage_path('logs/pay.log'),"支付单号：".$message['out_trade_no']."支付结果：".$message['return_code'].PHP_EOL,FILE_APPEND);
             return true;
         });
-
         return $response;
     }
 
@@ -146,9 +168,9 @@ class PayController extends BaseController
                 $where['client_id'] = $client_id;
             }
             $list = \DB::table('withdraw_record')
-                        ->select('withdraw_record.*','clients.nick_name','clients.phone_num')
-                        ->leftJoin('clients','clients.id','=','withdraw_record.client_id')
-                        ->where($where)->paginate($limit);
+                ->select('withdraw_record.*','clients.nick_name','clients.phone_num')
+                ->leftJoin('clients','clients.id','=','withdraw_record.client_id')
+                ->where($where)->paginate($limit);
             return response_format($list);
         }else{
             $list = \DB::table('withdraw_record')
