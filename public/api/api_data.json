@@ -105,7 +105,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/create"
+        "url": "https://wxapp.honeybot.cn/api/address/create"
       }
     ]
   },
@@ -173,7 +173,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/delete"
+        "url": "https://wxapp.honeybot.cn/api/address/delete"
       }
     ]
   },
@@ -297,7 +297,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/edit"
+        "url": "https://wxapp.honeybot.cn/api/address/edit"
       }
     ]
   },
@@ -365,7 +365,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/get"
+        "url": "https://wxapp.honeybot.cn/api/address/get"
       }
     ]
   },
@@ -427,7 +427,7 @@
     "groupTitle": "Address",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/address/list"
+        "url": "https://wxapp.honeybot.cn/api/address/list"
       }
     ]
   },
@@ -455,7 +455,48 @@
     "groupTitle": "Client",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/client"
+        "url": "https://wxapp.honeybot.cn/api/client"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/client/flow_list",
+    "title": "资金变更流水",
+    "name": "______",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>提现类型 1 增加冻结金额 2 可提现金额减少 3 减少冻结金额 4 可提现金额增加</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/client/flow_list"
       }
     ]
   },
@@ -483,7 +524,7 @@
     "groupTitle": "Client",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/client/check"
+        "url": "https://wxapp.honeybot.cn/api/client/check"
       }
     ]
   },
@@ -538,7 +579,7 @@
     "groupTitle": "Good",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/good"
+        "url": "https://wxapp.honeybot.cn/api/good"
       }
     ]
   },
@@ -606,7 +647,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/cancel"
+        "url": "https://wxapp.honeybot.cn/api/order/cancel"
       }
     ]
   },
@@ -674,7 +715,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/confirm"
+        "url": "https://wxapp.honeybot.cn/api/order/confirm"
       }
     ]
   },
@@ -833,7 +874,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/create"
+        "url": "https://wxapp.honeybot.cn/api/order/create"
       }
     ]
   },
@@ -901,7 +942,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/get"
+        "url": "https://wxapp.honeybot.cn/api/order/get"
       }
     ]
   },
@@ -1088,7 +1129,7 @@
     "groupTitle": "Order",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/order/list"
+        "url": "https://wxapp.honeybot.cn/api/order/list"
       }
     ]
   },
@@ -1163,7 +1204,7 @@
     "groupTitle": "Pay",
     "sampleRequest": [
       {
-        "url": "http://xmshop.mqphp.com/api/pay/withdraw_list"
+        "url": "https://wxapp.honeybot.cn/api/pay/withdraw_list"
       }
     ]
   }

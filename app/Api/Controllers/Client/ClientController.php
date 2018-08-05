@@ -72,7 +72,7 @@ class ClientController extends BaseController
     }
 
     /**
-     * @api {get} /client/flow_list
+     * @api {get} /client/flow_list 资金变更流水
      * @apiName 资金变更流水
      * @apiGroup Client
      *
