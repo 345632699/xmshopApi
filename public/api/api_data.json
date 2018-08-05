@@ -487,6 +487,13 @@
             "optional": false,
             "field": "type",
             "description": "<p>提现类型 1 增加冻结金额 2 可提现金额减少 3 减少冻结金额 4 可提现金额增加</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>返回条数</p>"
           }
         ]
       }

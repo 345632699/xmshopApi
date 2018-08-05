@@ -79,15 +79,22 @@ class ClientController extends BaseController
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
      * @apiParam {int} type 提现类型 1 增加冻结金额 2 可提现金额减少 3 减少冻结金额 4 可提现金额增加
+     * @apiParam {int} limit 返回条数
      *
      */
     public function getFlowList(Request $request){
         $limit = $request->get('limit',20);
         $client_id = $this->client->getUserByOpenId()->id;
+        $type = $request->get('type',0);
+        $where['client_id'] = $client_id;
+        if ($type) {
+            $where['type'] = $type;
+        }
         $flow_list = \DB::table('client_amount_flow')
             ->select('clients.nick_name as child_name','client_amount_flow.*')
             ->leftJoin('clients','clients.id','=','child_id')
-            ->where('client_id',$client_id)
+            ->where($where)
+            ->orderBy('uid','desc')
             ->limit($limit)->get();
         return response_format($flow_list);
     }
