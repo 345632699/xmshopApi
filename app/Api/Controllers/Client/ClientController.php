@@ -71,4 +71,25 @@ class ClientController extends BaseController
         }
     }
 
+    /**
+     * @api {get} /client/flow_list
+     * @apiName 资金变更流水
+     * @apiGroup Client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} type 提现类型
+     *
+     */
+    public function getFlowList(Request $request){
+        $limit = $request->get('limit',20);
+        $client_id = $this->client->getUserByOpenId()->id;
+        $flow_list = \DB::table('client_amount_flow')
+            ->select('clients.nick_name as child_name','client_amount_flow.*')
+            ->leftJoin('clients','clients.id','=','child_id')
+            ->where('client_id',$client_id)
+            ->limit($limit)->get();
+        return response_format($flow_list);
+    }
+
 }

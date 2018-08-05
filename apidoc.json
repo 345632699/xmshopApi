@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "小萌商城API",
   "title": "Custom apiDoc browser title",
-  "url" : "http://xmshop.mqphp.com/api",
-  "sampleUrl": "http://xmshop.mqphp.com/api",
+  "url" : "https://wxapp.honeybot.cn/api",
+  "sampleUrl": "https://wxapp.honeybot.cn/api",
   "template": {
     "withCompare": true,
     "withGenerator": true
