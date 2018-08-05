@@ -13,6 +13,7 @@ use App\Model\Good;
 use App\Model\Order;
 use Carbon\Carbon;
 use EasyWeChat\Payment\Application;
+use Illuminate\Support\Facades\Log;
 
 class PayRepository implements PayRepositoryInterface
 {
@@ -68,6 +69,9 @@ class PayRepository implements PayRepositoryInterface
                 'amount' => $withdraw_detail->amount * 100, // 企业付款金额，单位为分
                 'desc' => '奖金提现', // 企业付款操作说明信息。必填
             ]);
+            Log::info('=====微信提现=====');
+            Log::info("微信提现返回结果：".json_encode($res));
+            Log::info('=====微信提现=====');
             if ($res['return_code'] == 'SUCCESS'){
                 \DB::table('withdraw_record')->update(['status'=>1,'success_time'=>Carbon::now()]);
             }else{
