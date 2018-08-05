@@ -34,6 +34,8 @@ $api->version('v1', function ($api) {
 
         //商品路由
         $api->get('good','Goods\GoodController@index');
+        //支付回调
+        $api->any('pay/notify','Pay\PayController@payNotify');
 
         //收货地址
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {

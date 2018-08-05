@@ -63,8 +63,8 @@ class ClientController extends BaseController
      */
     public function checkBind(){
         $client_id = $this->client->getUserByOpenId()->id;
-        $count = \DB::table('client_link_mapping')->where('child_client_id',$client_id)->count();
-        if ($count){
+        $result = $this->client->checkBind($client_id);
+        if ($result){
             return response_format(['has_bind_robot'=>1]);
         }else{
             return response_format(['has_bind_robot'=>0],0);

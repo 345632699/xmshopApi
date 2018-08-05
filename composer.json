@@ -21,7 +21,8 @@
     },
     "autoload": {
         "classmap": [
-            "database"
+            "database",
+            "app/SysConfig"
         ],
         "psr-4": {
             "App\\": "app/",

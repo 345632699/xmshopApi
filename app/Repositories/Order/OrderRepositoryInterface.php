@@ -13,7 +13,7 @@ interface OrderRepositoryInterface {
 
     public function createOrderHeader($request,$client_id);
 
-    public function createOrderLine($order_header_id,$request);
+    public function createOrderLine($order_header_id,$request,$parent_id);
 
     public function createDelivery($order_header_id,$address_id);
 

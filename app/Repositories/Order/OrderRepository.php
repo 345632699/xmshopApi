@@ -15,6 +15,7 @@ use App\Model\Good;
 use App\Model\Invoice;
 use App\Model\Order;
 use App\Model\OrderDetail;
+use App\Repositories\Client\ClientRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,6 +23,11 @@ use Mockery\Exception;
 
 class OrderRepository implements OrderRepositoryInterface
 {
+    
+    public function __construct(ClientRepository $client)
+    {
+        $this->client = $client;
+    }
 
     public function createOrderHeader($request,$client_id)
     {
@@ -34,17 +40,24 @@ class OrderRepository implements OrderRepositoryInterface
         return $order_header;
     }
 
-    public function createOrderLine($order_header_id,$request)
+    public function createOrderLine($order_header_id,$request,$parent_id)
     {
+        $client_id = session('client.id');
+        $has_bind_robot = $this->client->checkBind($client_id);
         $order_line_data['header_id'] = $order_header_id;
         $order_line_data['good_id'] = $request->get('good_id',1);
         $good = Good::find($order_line_data['good_id'])->first();
+        if(!$has_bind_robot && $parent_id > 0){
+            $prie = $good->unit_price;
+        }else{
+            $prie = $good->original_unit_price;
+        }
         $order_line_data['color'] = $request->get('color',"白色");
         $order_line_data['size'] = $request->get('size',"17*17*17cm");
         $order_line_data['buyer_msg'] = $request->get('buyer_msg',"");
         $order_line_data['quantity'] = $request->get('quantity',1);
-        $order_line_data['unit_price'] = $good->unit_price;
-        $order_line_data['total_price'] = $good->unit_price * $order_line_data['quantity'];
+        $order_line_data['unit_price'] = $prie;
+        $order_line_data['total_price'] = $prie * $order_line_data['quantity'];
         $order_line = OrderDetail::create($order_line_data);
         return $order_line;
     }
@@ -53,8 +66,11 @@ class OrderRepository implements OrderRepositoryInterface
     {
         $delivery_data['order_header_id'] = $order_header_id;
         $delivery_data['delivery_contact_id'] = $address_id;
-        $contract = Contact::find($address_id)->first();
-        $delivery_data['address'] = $contract->name . ' ' . $contract->province.$contract->city.$contract->area.$contract->address . " " .$contract->phone_num;
+        $contract = Contact::find($address_id);
+        $delivery_data['address'] = '';
+        if ($contract){
+            $delivery_data['address'] = $contract->name . ' ' . $contract->province.$contract->city.$contract->area.$contract->address . " " .$contract->phone_num;
+        }
         $delivery = Delivery::create($delivery_data);
         return $delivery;
     }
