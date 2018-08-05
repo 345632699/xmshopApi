@@ -68,15 +68,14 @@ class PayRepository implements PayRepositoryInterface
                 'amount' => $withdraw_detail->amount * 100, // 企业付款金额，单位为分
                 'desc' => '奖金提现', // 企业付款操作说明信息。必填
             ]);
-        }
-
-        if (1){
-            \DB::table('withdraw_record')->update(['status'=>1]);
-        }else{
-            //付款失败
-            \DB::table('withdraw_record')->update(['status'=>0]);
-            $all_amount = $amount->amount + $withdraw_detail->amount;
-            $amount->update(['amount'=>$all_amount]);
+            if ($res['return_code'] == 'SUCCESS'){
+                \DB::table('withdraw_record')->update(['status'=>1,'success_time'=>Carbon::now()]);
+            }else{
+                //付款失败
+                \DB::table('withdraw_record')->update(['status'=>0]);
+                $all_amount = $amount->amount + $withdraw_detail->amount;
+                $amount->update(['amount'=>$all_amount]);
+            }
         }
     }
 }
