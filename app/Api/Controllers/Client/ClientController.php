@@ -78,7 +78,7 @@ class ClientController extends BaseController
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
-     * @apiParam {int} type 提现类型
+     * @apiParam {int} type 提现类型 1 增加冻结金额 2 可提现金额减少 3 减少冻结金额 4 可提现金额增加
      *
      */
     public function getFlowList(Request $request){
