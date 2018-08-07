@@ -38,6 +38,8 @@ class PayController extends BaseController
             file_put_contents(storage_path('logs/pay.log'),"支付单号：".$message['out_trade_no']."支付结果：".$message['return_code'].PHP_EOL,FILE_APPEND);
             $out_trade_no = $message['out_trade_no'];
             $pay_bills = \DB::table("pay_bills")->where('pay_order_number',$out_trade_no);
+//            传递parent_id
+            $parent_id = \DB::table("pay_bills")->where("order_header_id",$pay_bills->first()->order_header_id)->first()->parent_id;
             if (!$pay_bills) { // 如果订单不存在
                 Log::info("========微信支付=========");
                 Log::error('Order not exist.'."订单号：".$out_trade_no);
@@ -64,12 +66,14 @@ class PayController extends BaseController
                     }
                     $update = [
                         'pay_date' => Carbon::now(),
-                        'pay_status' => 1
+                        'pay_status' => 1,
+                        'parent_id' => $parent_id
                     ];
                     $res = $pay_bills->update($update);
                     if ($res){
-                        $parent_id = $pay_bills->first()->parent_id;
+                        // $parent_id = $pay_bills->first()->parent_id;
                         $client_id = $pay_bills->first()->client_id;
+                        Log::info("更新payBill成功,pid:".$parent_id."cid:".$client_id);
                         $this->client->updateTreeNode($client_id,$parent_id);
                     }
 
