@@ -5,6 +5,7 @@ namespace App\Api\Controllers\Pay;
 use App\Api\Controllers\BaseController;
 use App\Model\Client;
 use App\Model\Order;
+use App\Model\WithdrawRecord;
 use App\Repositories\Client\ClientRepository;
 use App\Repositories\Pay\PayRepository;
 use Carbon\Carbon;
@@ -130,7 +131,7 @@ class PayController extends BaseController
         $amount = \DB::table('client_amount')->where('client_id',$client_id)->first();
         if ($amount){
             $can_withdraw_amount = $amount->amount - $amount->freezing_amount;
-            if ( $can_withdraw_amount > $withdraw_amount){
+            if ( $can_withdraw_amount >= $withdraw_amount){
                 //record
                 $withdraw_record['client_id'] = $client_id;
                 $withdraw_record['partner_trade_no'] = 'W'.time();
@@ -138,7 +139,8 @@ class PayController extends BaseController
                 $withdraw_record['created_at'] = Carbon::now();
                 $withdraw_record['updated_at'] = Carbon::now();
 
-                $res = \DB::table('withdraw_record')->create($withdraw_record);
+//                $res = \DB::table('withdraw_record')->create($withdraw_record);
+                $res = WithdrawRecord::create($withdraw_record);
                 if ($res->uid) {
                     $update['amount'] = $amount->amount - $withdraw_amount;
                     $amount->update($update);
