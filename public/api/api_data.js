@@ -1241,7 +1241,7 @@ define({ "api": [
             "group": "Parameter",
             "type": "int",
             "optional": false,
-            "field": "type",
+            "field": "amount",
             "description": "<p>提现金额</p>"
           }
         ]
