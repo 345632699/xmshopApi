@@ -105,6 +105,21 @@ class PayController extends BaseController
         return $response;
     }
 
+    /**
+     * @api {post} /pay/withdraw 提现
+     * @apiName withdraw
+     * @apiGroup Pay
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} amount 提现金额
+     *
+     * @apiSuccess {Array} data 返回的数据结构体
+     * @apiSuccess {Number} status  1 执行成功 0 为执行失败
+     * @apiSuccess {string} msg 执行信息提示
+     *
+     *
+     */
     public function withdraw(Request $request){
         $withdraw_amount = $request->amount;
         if ($withdraw_amount <= 30){
@@ -171,7 +186,7 @@ class PayController extends BaseController
 
 
     /**
-     * @api {post} /pay/withdraw_list 取消订单
+     * @api {post} /pay/withdraw_list 提现记录
      * @apiName PayWithdraw
      * @apiGroup Pay
      *

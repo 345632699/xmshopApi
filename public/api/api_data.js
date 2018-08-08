@@ -1143,7 +1143,7 @@ define({ "api": [
   {
     "type": "post",
     "url": "/pay/withdraw_list",
-    "title": "取消订单",
+    "title": "提现记录",
     "name": "PayWithdraw",
     "group": "Pay",
     "header": {
@@ -1212,6 +1212,74 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://wxapp.honeybot.cn/api/pay/withdraw_list"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/pay/withdraw",
+    "title": "提现",
+    "name": "withdraw",
+    "group": "Pay",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>提现金额</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "data",
+            "description": "<p>返回的数据结构体</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "status",
+            "description": "<p>1 执行成功 0 为执行失败</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>执行信息提示</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Pay/PayController.php",
+    "groupTitle": "Pay",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/pay/withdraw"
       }
     ]
   }
