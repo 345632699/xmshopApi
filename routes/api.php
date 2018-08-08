@@ -59,7 +59,10 @@ $api->version('v1', function ($api) {
             $api->get('client/check','Client\ClientController@checkBind');
             $api->get('client/flow_list','Client\ClientController@getFlowList');
 
+            //提现记录
             $api->post('pay/withdraw_list','Pay\PayController@getWithDrawRecordList');
+            //提现
+            $api->post('pay/withdraw','Pay\PayController@withdraw');
         });
     });
 });
