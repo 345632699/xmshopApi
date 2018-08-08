@@ -56,7 +56,8 @@ class PayRepository implements PayRepositoryInterface
         }
     }
 
-    public function withDraw($withdraw_id,$client,$amount)
+    public function
+    withDraw($withdraw_id,$client,$amount)
     {
         $withdraw_detail = \DB::table('withdraw_record')->where(['uid'=>$withdraw_id,'status'=>2])->first();
         if ($withdraw_detail){

@@ -6,6 +6,7 @@ use App\Api\Controllers\BaseController;
 use App\Model\Client;
 use App\Model\Order;
 use App\Model\WithdrawRecord;
+use App\Model\ClientAmount;
 use App\Repositories\Client\ClientRepository;
 use App\Repositories\Pay\PayRepository;
 use Carbon\Carbon;
@@ -128,7 +129,8 @@ class PayController extends BaseController
         }
         $client = $this->client->getUserByOpenId();
         $client_id = $client->id;
-        $amount = \DB::table('client_amount')->where('client_id',$client_id)->first();
+//        $amount = \DB::table('client_amount')->where('client_id',$client_id)->first();
+        $amount = ClientAmount::where('client_id',$client_id)->first();
         if ($amount){
             $can_withdraw_amount = $amount->amount - $amount->freezing_amount;
             if ( $can_withdraw_amount >= $withdraw_amount){
