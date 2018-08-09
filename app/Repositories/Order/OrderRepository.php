@@ -90,6 +90,7 @@ class OrderRepository implements OrderRepositoryInterface
             ->leftJoin('order_lines as ol','ol.header_id','=','order_headers.uid')
             ->leftJoin('goods','goods.uid','=','good_id')
             ->where($where)
+            ->orderBy('order_date','desc')
             ->paginate($limit)->toArray();
 
         return $order_list;
