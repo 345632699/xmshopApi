@@ -82,7 +82,7 @@ class OrderController extends BaseController
      * @apiSuccess {int} good_id 商品id
      * @apiSuccess {string} good_name 商品名称
      * @apiSuccess {string} color 商品颜色
-     * @apiSuccess {string} size 商品尺寸
+     * @apiSuccess {string} combo_id 套餐id
      * @apiSuccess {float} total_price 商品总金额
      * @apiSuccess {float} unit_price 单价
      * @apiSuccess {int} quantity 数量
@@ -107,7 +107,7 @@ class OrderController extends BaseController
      * @apiParam {string} open_invoice_flag 是否开具发票 Y 开 N否
      * @apiParam {int} good_id 商品id
      * @apiParam {string} color 商品颜色
-     * @apiParam {string} size 商品尺寸大小
+     * @apiParam {string} combo_id 套餐id
      * @apiParam {int} quantity 商品数量
      * @apiParam {string} buyer_msg 买家留言
      *
