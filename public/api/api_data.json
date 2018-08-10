@@ -780,7 +780,7 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "combo",
+            "field": "combo_id",
             "description": "<p>套餐选择</p>"
           },
           {
@@ -1097,7 +1097,7 @@
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "combo",
+            "field": "combo_id",
             "description": "<p>套餐</p>"
           },
           {
