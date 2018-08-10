@@ -87,7 +87,7 @@ class OrderRepository implements OrderRepositoryInterface
 
 
         $order_list = \DB::table('order_headers')
-            ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','ol.color','ol.size','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
+            ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','ol.color','ol.combo_id','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
             ->leftJoin('order_lines as ol','ol.header_id','=','order_headers.uid')
             ->leftJoin('goods','goods.uid','=','good_id')
             ->where($where)
