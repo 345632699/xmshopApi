@@ -24,6 +24,7 @@ class AddressController extends BaseController
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
+     * @apiParam {int} goods_id 商品id
      *
      * @apiSuccess {Array} data 返回的数据结构体
      * @apiSuccess {Number} status  1 执行成功 0 为执行失败
