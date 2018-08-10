@@ -4,6 +4,7 @@ namespace App\Api\Controllers\Address;
 
 use App\Api\Controllers\BaseController;
 use App\Model\Contact;
+use App\Model\Good;
 use App\Repositories\Client\ClientRepository;
 use Illuminate\Http\Request;
 use Mockery\Exception;
@@ -37,8 +38,11 @@ class AddressController extends BaseController
     public function index(Request $request) {
         $limit = $request->get('limit',5);
         $client_id = session('client.id');
-        $address_list = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
-        return response_format($address_list);
+        $goods_is = get('goods_id',1);
+        $returnArr = [];
+        $returnArr['goods_thumbnail'] = Good::where('uid',$goods_is)->first()->thumbnail;
+        $returnArr['address_list'] = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
+        return response_format($returnArr);
     }
 
 

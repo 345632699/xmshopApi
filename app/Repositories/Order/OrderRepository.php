@@ -87,7 +87,7 @@ class OrderRepository implements OrderRepositoryInterface
 
 
         $order_list = \DB::table('order_headers')
-            ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','ol.color','ol.combo_id','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
+            ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','goods.thumbnail','ol.color','ol.combo_id','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
             ->leftJoin('order_lines as ol','ol.header_id','=','order_headers.uid')
             ->leftJoin('goods','goods.uid','=','good_id')
             ->where($where)
@@ -125,9 +125,10 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrderDetail($order_id)
     {
         try{
-            $order = Order::select('order_headers.*','color','quantity','combo_id','unit_price','good_id','nick_name','buyer_msg')
+            $order = Order::select('order_headers.*','color','quantity','combo_id','unit_price','good_id','thumbnail','nick_name','buyer_msg')
                 ->leftJoin('order_lines as ol','order_headers.uid','=','ol.header_id')
                 ->leftJoin('clients','clients.id','=','order_headers.client_id')
+                ->leftJoin('goods','goods.uid','=','good_id')
                 ->where('order_headers.uid',$order_id)->first();
 
             //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
