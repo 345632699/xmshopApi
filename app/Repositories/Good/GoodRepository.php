@@ -25,7 +25,7 @@ class GoodRepository implements GoodRepositoryInterface
             $goods = Good::select("goods.*")
                 ->where('goods.uid',$good_id)
                 ->first();
-            $goods->size_list = \DB::table('good_sizes')
+            $goods->size_list = \DB::table('good_combos')
                 ->select('uid','name')
                 ->where('good_id',$good_id)
                 ->get()->toArray();

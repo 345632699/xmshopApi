@@ -780,8 +780,8 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "size",
-            "description": "<p>商品尺寸大小</p>"
+            "field": "combo",
+            "description": "<p>套餐选择</p>"
           },
           {
             "group": "Parameter",
@@ -1097,8 +1097,8 @@
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "size",
-            "description": "<p>商品尺寸</p>"
+            "field": "combo",
+            "description": "<p>套餐</p>"
           },
           {
             "group": "Success 200",
