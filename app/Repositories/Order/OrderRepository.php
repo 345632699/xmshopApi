@@ -45,6 +45,7 @@ class OrderRepository implements OrderRepositoryInterface
         $client_id = session('client.id');
         $has_bind_robot = $this->client->checkBind($client_id);
         $combo_id = $request->get('combo_id',1);
+        $good_combos = \DB::table("good_combos")->where('uid',$combo_id)->first();
         $order_line_data['header_id'] = $order_header_id;
         $order_line_data['good_id'] = $request->get('good_id',1);
         $good = Good::find($order_line_data['good_id'])->first();
@@ -54,7 +55,7 @@ class OrderRepository implements OrderRepositoryInterface
             $price = $combo_id==1 ? $good->original_unit_price : $good->combo_original_unit_price;
         }
         $order_line_data['color'] = $request->get('color',"白色");
-        $order_line_data['combo_id'] = $combo_id;
+        $order_line_data['combo'] = $good_combos->name;
         $order_line_data['buyer_msg'] = $request->get('buyer_msg',"");
         $order_line_data['quantity'] = $request->get('quantity',1);
         $order_line_data['unit_price'] = $price;
