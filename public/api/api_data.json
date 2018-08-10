@@ -388,6 +388,19 @@
         ]
       }
     },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "goods_id",
+            "description": "<p>商品id</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
