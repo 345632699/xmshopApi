@@ -125,7 +125,7 @@ class OrderRepository implements OrderRepositoryInterface
     public function getOrderDetail($order_id)
     {
         try{
-            $order = Order::select('order_headers.*','color','quantity','combo_id','unit_price','good_id','thumbnail','nick_name','buyer_msg')
+            $order = Order::select('order_headers.*','color','quantity','combo_id','ol.unit_price','good_id','thumbnail','nick_name','buyer_msg')
                 ->leftJoin('order_lines as ol','order_headers.uid','=','ol.header_id')
                 ->leftJoin('clients','clients.id','=','order_headers.client_id')
                 ->leftJoin('goods','goods.uid','=','good_id')
