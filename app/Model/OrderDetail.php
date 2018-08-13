@@ -19,7 +19,6 @@ class OrderDetail extends Model
         'robot_id',
         'quantity',
         'unit_price',
-        'unit_price',
         'buyer_msg',
         'total_price',
         'updated_at',
