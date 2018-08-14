@@ -39,11 +39,8 @@ class AddressController extends BaseController
     public function index(Request $request) {
         $limit = $request->get('limit',5);
         $client_id = session('client.id');
-        $goods_is = $request->get('goods_id',1);
-        $returnArr = [];
-        $returnArr['goods_thumbnail'] = Good::where('uid',$goods_is)->first()->thumbnail;
-        $returnArr['address_list'] = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
-        return response_format($returnArr);
+        $address_list = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
+        return response_format($address_list);
     }
 
 
