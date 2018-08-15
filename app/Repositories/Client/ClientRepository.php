@@ -136,7 +136,7 @@ class ClientRepository implements ClientRepositoryInterface
         $id = \DB::table('client_amount_flow')->insertGetId($record);//更新资金流水记录表
 
         //更新用户资金表冻结金额
-        $client_amount = ClientAmount::where('client_id',$parent_id);
+        $client_amount = ClientAmount::where('client_id',$parent_id)->first();
         if($client_amount){
             $amount['freezing_amount'] = $client_amount->freezing_amount + $record['amount'];
             $amount['amount'] = $client_amount->amount + $record['amount'] ;
