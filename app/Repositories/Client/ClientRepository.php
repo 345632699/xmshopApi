@@ -8,6 +8,7 @@
 
 namespace App\Repositories\Client;
 use App\Model\Client;
+use App\Model\ClientAmount;
 use Carbon\Carbon;
 use JWTAuth;
 use Mockery\Exception;
@@ -132,8 +133,21 @@ class ClientRepository implements ClientRepositoryInterface
         $record['status'] = 1;
         $record['updated_at'] = Carbon::now();
         $record['created_at'] = Carbon::now();
-        $id = \DB::table('client_amount_flow')->insertGetId($record);
-        if ($id > 0 ){
+        $id = \DB::table('client_amount_flow')->insertGetId($record);//更新资金流水记录表
+
+        //更新用户资金表冻结金额
+        $client_amount = ClientAmount::where('client_id',$parent_id);
+        if($client_amount){
+            $amount['freezing_amount'] = $client_amount->freezing_amount + $record['amount'];
+            $amount['updated_at'] = Carbon::now();
+            $res = $client_amount->update($amount);
+        }else{
+            $amount['client_id'] = $record['client_id'];
+            $amount['freezing_amount'] = $record['amount'];
+            $res = $client_amount->insertGetId($amount);
+        }
+
+        if ($id > 0 && $res > 0){
             \Log::info($parent_id."冻结金额增加成功，金额为：".$record['amount']);
         }
     }
