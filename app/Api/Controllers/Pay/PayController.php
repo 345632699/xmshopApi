@@ -173,12 +173,16 @@ class PayController extends BaseController
         $client = Client::find($client_id);
         if ($type == 1){
             $record['memo'] = $client->nick_name."增加冻结金额".$record['amount']."元";
+            $record['status'] = 1;
         }else if ($type == 2){
             $record['memo'] = $client->nick_name."可提现金额减少".$record['amount']."元";
+            $record['status'] = 2;
         }else if ($type == 3){
             $record['memo'] = $client->nick_name."减少冻结金额".$record['amount']."元";
-        }else if ($type == 3){
+            $record['status'] = 3;
+        }else if ($type == 4){
             $record['memo'] = $client->nick_name."可提现金额增加".$record['amount']."元";
+            $record['status'] = 4;
         }
         $record['updated_at'] = Carbon::now();
         $record['created_at'] = Carbon::now();

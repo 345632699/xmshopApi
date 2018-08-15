@@ -7,6 +7,7 @@
  */
 
 namespace App\Repositories\Client;
+use App\Model\Client;
 use Carbon\Carbon;
 use JWTAuth;
 use Mockery\Exception;
@@ -84,6 +85,7 @@ class ClientRepository implements ClientRepositoryInterface
                     //插入自身的一条记录
                     $this->insertSelfNode($client_id);
 
+                    \Log::info("======pid:".$parent_id.";cid:".$client_id.",准备添加冻结金额======");
                     //添加 推广人的冻结资金
                     $this->updateFrozenAmount($client_id,$parent_id);
 
@@ -125,7 +127,9 @@ class ClientRepository implements ClientRepositoryInterface
         $record['child_id'] = $client_id;
         $record['amount'] = $spread_amount;
         $record['type'] = 2;
-        $record['memo'] = "增加冻结金额".$record['amount']."元";
+        $client = Client::find($parent_id);
+        $record['memo'] = $client->nick_name."增加冻结金额".$record['amount']."元";
+        $record['status'] = 1;
         $record['updated_at'] = Carbon::now();
         $record['created_at'] = Carbon::now();
         $id = \DB::table('client_amount_flow')->insertGetId($record);

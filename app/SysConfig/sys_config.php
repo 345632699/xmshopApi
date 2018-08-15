@@ -3,7 +3,7 @@
 
 class SystemConfig
 {
-    static public $spread_amount = 100; // 推广奖励金
+    static public $spread_amount = 60; // 推广奖励金
 
 };
 ?>
