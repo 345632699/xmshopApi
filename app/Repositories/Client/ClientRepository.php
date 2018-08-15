@@ -139,12 +139,13 @@ class ClientRepository implements ClientRepositoryInterface
         $client_amount = ClientAmount::where('client_id',$parent_id);
         if($client_amount){
             $amount['freezing_amount'] = $client_amount->freezing_amount + $record['amount'];
-            $amount['updated_at'] = Carbon::now();
+            $amount['amount'] = $client_amount->amount + $record['amount'] ;
             $res = $client_amount->update($amount);
         }else{
             $amount['client_id'] = $record['client_id'];
+            $amount['amount'] = $record['amount'];
             $amount['freezing_amount'] = $record['amount'];
-            $res = $client_amount->insertGetId($amount);
+            $res = ClientAmount::create($amount)->uid;
         }
 
         if ($id > 0 && $res > 0){
