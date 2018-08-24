@@ -39,7 +39,10 @@ class AddressController extends BaseController
     public function index(Request $request) {
         $limit = $request->get('limit',5);
         $client_id = session('client.id');
-        $address_list = Contact::where('client_id',$client_id)->paginate($limit)->toArray();
+        //update by cai 20180824
+        //update start
+        $address_list = Contact::where('client_id',$client_id)->orderBy('default_flag', 'desc')->paginate($limit)->toArray();
+        //update end
         return response_format($address_list);
     }
 

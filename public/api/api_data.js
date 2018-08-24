@@ -1110,7 +1110,7 @@ define({ "api": [
             "group": "Success 200",
             "type": "string",
             "optional": false,
-            "field": "combo_id",
+            "field": "combo",
             "description": "<p>套餐</p>"
           },
           {

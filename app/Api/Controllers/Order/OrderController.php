@@ -82,7 +82,7 @@ class OrderController extends BaseController
      * @apiSuccess {int} good_id 商品id
      * @apiSuccess {string} good_name 商品名称
      * @apiSuccess {string} color 商品颜色
-     * @apiSuccess {string} combo_id 套餐id
+     * @apiSuccess {string} combo 套餐
      * @apiSuccess {float} total_price 商品总金额
      * @apiSuccess {float} unit_price 单价
      * @apiSuccess {int} quantity 数量

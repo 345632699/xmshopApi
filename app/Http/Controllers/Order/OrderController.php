@@ -24,7 +24,7 @@ class OrderController extends Controller
         if ($order_status >= 0){
             $where['order_status'] = $order_status;
         }
-        $orderList = Order::select('order_headers.*','color','quantity','combo_id','ol.unit_price','good_id','goods.name','nick_name')
+        $orderList = Order::select('order_headers.*','color','quantity','combo','ol.unit_price','good_id','goods.name','nick_name')
             ->leftJoin('order_lines as ol','order_headers.uid','=','ol.header_id')
             ->leftJoin('goods','goods.uid','=','ol.good_id')
             ->leftJoin('clients','clients.id','=','order_headers.client_id')

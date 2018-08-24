@@ -15,7 +15,7 @@ class OrderDetail extends Model
         'header_id',
         'good_id',
         'color',
-        'combo_id',
+        'combo',
         'robot_id',
         'quantity',
         'unit_price',

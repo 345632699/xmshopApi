@@ -124,7 +124,7 @@ class PayController extends BaseController
      */
     public function withdraw(Request $request){
         $withdraw_amount = $request->amount;
-        if ($withdraw_amount <= 30){
+        if ($withdraw_amount < 30){
             return response_format([],0,'提现金额必须大于30元');
         }
         $client = $this->client->getUserByOpenId();
@@ -188,7 +188,7 @@ class PayController extends BaseController
         $record['created_at'] = Carbon::now();
         $id = \DB::table('client_amount_flow')->insertGetId($record);
         if ($id > 0 ){
-            \Log::info($client_id."冻结金额增加成功，金额为：".$record['amount']);
+            \Log::info($record['memo']);
         }
     }
 

@@ -72,7 +72,10 @@ class PayRepository implements PayRepositoryInterface
             Log::info('=====微信提现=====');
             Log::info("微信提现返回结果：".json_encode($res));
             Log::info('=====微信提现=====');
-            if ($res['return_code'] == 'SUCCESS'){
+            //update by cai 20180823
+            //update start
+            if ($res['return_code'] == 'SUCCESS' && $res['result_code'] == 'SUCCESS'){
+            //update end
                 \DB::table('withdraw_record')->where(['uid'=>$withdraw_id,'status'=>2])->update(['status'=>1,'success_time'=>Carbon::now()]);
             }else{
                 //付款失败
