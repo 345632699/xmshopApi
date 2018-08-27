@@ -87,8 +87,23 @@ class ClientRepository implements ClientRepositoryInterface
                     $this->insertSelfNode($client_id);
 
                     \Log::info("======pid:".$parent_id.";cid:".$client_id.",准备添加冻结金额======");
+
                     //添加 推广人的冻结资金
-                    $this->updateFrozenAmount($client_id,$parent_id);
+
+                    //update by cai 20180827 --start
+                    //增加第一级推广人的冻结资金
+                    $first_spread_id = $parent_id; //上一级的id
+                    $this->updateFrozenAmount($client_id,$first_spread_id,1);
+
+                    //增加第二级推广人的冻结资金
+                    $second_spread_id = \DB::table('client_link_treepaths')->where([ //上两极的id
+                        ['path_end_client_id', '=', $client_id],
+                        ['dist', '=', '2'],
+                    ])->first()->path_begin_client_id;
+                    if($second_spread_id){
+                        $this->updateFrozenAmount($client_id,$second_spread_id,2);
+                    }
+                    //--end
 
                 }else{
                     $this->insertSelfNode($client_id);
@@ -121,18 +136,21 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
 
-    private function updateFrozenAmount($client_id, $parent_id)
+    private function updateFrozenAmount($client_id, $parent_id, $spread_flag)
     {
-        $spread_amount = \SystemConfig::$spread_amount;
+        //update by cai 20180827 --start
+        $spread_amount = $spread_flag == 1 ?  \SystemConfig::$first_spread_amount : \SystemConfig::$second_spread_amount;
         $record['client_id'] = $parent_id;
         $record['child_id'] = $client_id;
         $record['amount'] = $spread_amount;
         $record['type'] = 2;
         $client = Client::find($parent_id);
         $record['memo'] = $client->nick_name."增加冻结金额".$record['amount']."元";
+        $record['spread_flag'] = $spread_flag;
         $record['status'] = 1;
         $record['updated_at'] = Carbon::now();
         $record['created_at'] = Carbon::now();
+        //--end
         $id = \DB::table('client_amount_flow')->insertGetId($record);//更新资金流水记录表
 
         //更新用户资金表冻结金额
