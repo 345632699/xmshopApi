@@ -134,7 +134,7 @@ class OrderRepository implements OrderRepositoryInterface
             $order_status = $order->order_status;
             switch ($order_status){
                 case 0:
-                    $order->order_status_name = "未支付";
+                    $order->order_status_name = "待支付";
                     break;
                 case 1:
                     $order->order_status_name = "已支付";
@@ -161,7 +161,7 @@ class OrderRepository implements OrderRepositoryInterface
                     $order->order_status_name = "已退货";
                     break;
                 case 9:
-                    $order->order_status_name = "已取消";
+                    $order->order_status_name = "已关闭";
                     break;
             }
             // 0-预付款，1-货到付款
