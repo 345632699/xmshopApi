@@ -211,6 +211,7 @@ class OrderRepository implements OrderRepositoryInterface
             $orderRes = $deliveryRes = false;
             DB::beginTransaction();
             //确保订单是 本人在操作
+            //update by cai 20180830 (没发货也可以让用户确认收货）--start
             $order = DB::table('order_headers')
                 ->where(['uid'=>$order_id,'client_id'=>$client_id])
                 ->whereIn('order_status', [1,3]);
@@ -218,7 +219,10 @@ class OrderRepository implements OrderRepositoryInterface
                 $orderRes = $order->update(['order_status'=>4]);
             }
             //已发货 切用户id对上了才可以进行操作
-            $delivery = DB::table('delivery')->where(['order_header_id'=>$order_id,'delivery_status'=>1]);
+            $delivery = DB::table('delivery')
+                ->where('order_header_id',$order_id)
+                ->whereIn('delivery_status', [0,1]);
+            // --end
             if ($delivery)
                 $deliveryRes = $delivery->update(['delivery_status'=>2]);
             if ($orderRes && $deliveryRes){
