@@ -214,7 +214,7 @@ class OrderRepository implements OrderRepositoryInterface
             //update by cai 20180830 (没发货也可以让用户确认收货）--start
             $order = DB::table('order_headers')
                 ->where(['uid'=>$order_id,'client_id'=>$client_id])
-                ->whereIn('order_status', [1,3]);
+                ->whereIn('order_status', [1,2,3]);
             if ($order){
                 $orderRes = $order->update(['order_status'=>4]);
             }
