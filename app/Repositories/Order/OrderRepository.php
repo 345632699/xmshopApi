@@ -78,6 +78,7 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getOrderList($order_status, $limit = 5)
     {
+        //update by cai 20180830 --start
         $whereIn = [];
         if ($order_status >= 0 ){
             $where['order_status'] = $order_status;
@@ -89,6 +90,7 @@ class OrderRepository implements OrderRepositoryInterface
                 $whereIn['order_status'] = 3;
             }
         }
+        //--end
 
         $order_list = \DB::table('order_headers')
             ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','goods.thumbnail','ol.color','ol.combo','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
