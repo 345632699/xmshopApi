@@ -78,28 +78,24 @@ class OrderRepository implements OrderRepositoryInterface
 
     public function getOrderList($order_status, $limit = 5)
     {
-
-        //update by cai 20180830 --start
-        $whereIn = [];
         if ($order_status >= 0 ){
             $where['order_status'] = $order_status;
             $where['client_id'] = session('client.id');
         }else{
             $where['client_id'] = session('client.id');
-            if($order_status == -2){
-                $whereIn['order_status'] = 1;
-                $whereIn['order_status'] = 3;
-            }
         }
 
         $order_list = \DB::table('order_headers')
             ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','goods.thumbnail','ol.color','ol.combo','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
             ->leftJoin('order_lines as ol','ol.header_id','=','order_headers.uid')
             ->leftJoin('goods','goods.uid','=','good_id')
-            ->where($where)
-            ->whereIn($whereIn)
-            ->orderBy('order_date','desc')
-            ->paginate($limit)->toArray();
+            ->where($where);
+
+        //update by cai 20180830 --start
+        if($order_status == -2){
+            $order_list = $order_list -> whereIn('order_status', [1,3]);
+        }
+        $order_list = $order_list ->orderBy('order_date','desc') ->paginate($limit)->toArray();
         //--end
 
         return $order_list;
