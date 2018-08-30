@@ -211,7 +211,9 @@ class OrderRepository implements OrderRepositoryInterface
             $orderRes = $deliveryRes = false;
             DB::beginTransaction();
             //确保订单是 本人在操作
-            $order = DB::table('order_headers')->where(['uid'=>$order_id,'client_id'=>$client_id,'order_status'=>3]);
+            $order = DB::table('order_headers')
+                ->where(['uid'=>$order_id,'client_id'=>$client_id])
+                ->whereIn('order_status', [1,3]);
             if ($order){
                 $orderRes = $order->update(['order_status'=>4]);
             }
