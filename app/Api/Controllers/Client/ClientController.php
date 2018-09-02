@@ -43,6 +43,10 @@ class ClientController extends BaseController
         $wait_pay = Order::where(['client_id'=>$client_id,'order_status'=>0])->count();
         $client->wait_pay = intval($wait_pay);
 
+        //待收货和已付款
+        $wait_delivery = Order::where('client_id',$client_id)->whereIn('order_status',[1,3])->count();
+        $client->wait_delivery = intval($wait_delivery);
+
         return response_format($client);
     }
 
