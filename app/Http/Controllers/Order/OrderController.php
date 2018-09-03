@@ -111,9 +111,20 @@ class OrderController extends Controller
         $delivery_name = $request->name;
         $delivery_number = $request->delivery_number;
         $delivery_number = $delivery_name. " " .$delivery_number;
+
+        //update by cai 20180603 --start
+        $update['delivery_number'] = $delivery_number;
+        $update['delivery_status'] = 1;
+        $update['delivery_date'] = Carbon::now();
+        $request_close_date = Carbon::now()->addDays(10);
+
         $order_id = $request->order_id;
         $delivery = Delivery::where('order_header_id',$order_id)->first();
-        $res = $delivery->update(['delivery_number'=>$delivery_number]);
+        $delivery_res = $delivery->update($update);
+
+        $order = Order::find($order_id);
+        $order_res = $order->update(['request_close_date'=>$request_close_date]);
+        //--end
 
         $product_ids = explode(',',$request->product_ids);
         foreach ($product_ids as $key=>$id){
