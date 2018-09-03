@@ -110,7 +110,7 @@ define({ "api": [
     ]
   },
   {
-    "type": "get",
+    "type": "post",
     "url": "/address/delete",
     "title": "删除地址",
     "name": "AddressDelete_____",
@@ -1293,6 +1293,34 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://wxapp.honeybot.cn/api/pay/withdraw"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/client/first",
+    "title": "是否首次购买",
+    "name": "first",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/client/first"
       }
     ]
   }

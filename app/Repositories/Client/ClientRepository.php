@@ -7,6 +7,7 @@
  */
 
 namespace App\Repositories\Client;
+use App\Model\Order;
 use App\Model\Client;
 use App\Model\ClientAmount;
 use Carbon\Carbon;
@@ -129,6 +130,18 @@ class ClientRepository implements ClientRepositoryInterface
     public function checkBind($client_id)
     {
         $count = \DB::table('client_link_mapping')->where('child_client_id',$client_id)->count();
+        if ($count){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public function checkFirstBuy($client_id){
+        $count = Order::where('client_id',$client_id)
+            ->whereNull('return_date')
+            ->whereNotNull('pay_date')
+            ->count();
         if ($count){
             return true;
         }else{

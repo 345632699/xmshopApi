@@ -76,6 +76,24 @@ class ClientController extends BaseController
     }
 
     /**
+     * @api {get} /client/first 是否首次购买
+     * @apiName 是否首次购买
+     * @apiGroup Client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     */
+    public function checkFirstBuy(){
+        $client_id = $this->client->getUserByOpenId()->id;
+        $result = $this->client->checkFirstBuy($client_id);
+        if ($result){
+            return response_format(['is_first_buy'=>0],0);
+        }else{
+            return response_format(['is_first_buy'=>1]);
+        }
+    }
+
+    /**
      * @api {get} /client/flow_list 资金变更流水
      * @apiName 资金变更流水
      * @apiGroup Client

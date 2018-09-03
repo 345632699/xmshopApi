@@ -57,6 +57,7 @@ $api->version('v1', function ($api) {
         $api->group(['middleware' => ['jwt.auth','scope']], function ($api) {
             $api->get('client','Client\ClientController@index');
             $api->get('client/check','Client\ClientController@checkBind');
+            $api->get('client/first','Client\ClientController@checkFirstBuy');
             $api->get('client/flow_list','Client\ClientController@getFlowList');
 
             //提现记录

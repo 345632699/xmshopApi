@@ -158,7 +158,7 @@ class AddressController extends BaseController
     }
 
     /**
-     * @api {get} /address/delete 删除地址
+     * @api {post} /address/delete 删除地址
      * @apiName AddressDelete-删除地址
      * @apiGroup Address
      *
