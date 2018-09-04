@@ -87,9 +87,9 @@ class ClientController extends BaseController
         $client_id = $this->client->getUserByOpenId()->id;
         $result = $this->client->checkFirstBuy($client_id);
         if ($result){
-            return response_format(['is_first_buy'=>0]);
-        }else{
             return response_format(['is_first_buy'=>1]);
+        }else{
+            return response_format(['is_first_buy'=>0]);
         }
     }
 

@@ -143,9 +143,9 @@ class ClientRepository implements ClientRepositoryInterface
             ->whereNotNull('pay_date')
             ->count();
         if ($count){
-            return true;
-        }else{
             return false;
+        }else{
+            return true;
         }
     }
 
