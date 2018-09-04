@@ -50,7 +50,10 @@ class OrderController extends BaseController
             return response_format(['err_msg'=>"订单ID不能为空"]);
         }
         $data = $this->order->getOrderDetail($order_id);
-        return response_format($data);
+        //update by cai 20180904 --start
+        $now = time();
+        return response_format(['res'=>$data,'now'=>$now]);
+        //--end
     }
 
     /**
@@ -93,8 +96,10 @@ class OrderController extends BaseController
         $order_status = $request->get('order_status',-1);
         $limit = $request->limit;
         $order_list = $this->order->getOrderList($order_status,$limit);
+        //update by cai 20180904 --start
         $now = time();
         return response_format(['res'=>$order_list,'now'=>$now]);
+        //--end
     }
 
     /**
