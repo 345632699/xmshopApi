@@ -71,7 +71,7 @@ class ClientController extends BaseController
         if ($result){
             return response_format(['has_bind_robot'=>1]);
         }else{
-            return response_format(['has_bind_robot'=>0],0);
+            return response_format(['has_bind_robot'=>0]);
         }
     }
 
@@ -87,7 +87,7 @@ class ClientController extends BaseController
         $client_id = $this->client->getUserByOpenId()->id;
         $result = $this->client->checkFirstBuy($client_id);
         if ($result){
-            return response_format(['is_first_buy'=>0],0);
+            return response_format(['is_first_buy'=>0]);
         }else{
             return response_format(['is_first_buy'=>1]);
         }
