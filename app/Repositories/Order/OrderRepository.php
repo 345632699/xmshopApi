@@ -43,12 +43,13 @@ class OrderRepository implements OrderRepositoryInterface
     public function createOrderLine($order_header_id,$request,$parent_id)
     {
         $client_id = session('client.id');
-        $has_bind_robot = $this->client->checkBind($client_id);
+//        $has_bind_robot = $this->client->checkBind($client_id);
+        $is_first_buy = $this->client->checkFirstBuy($client_id);
         $combo_id = $request->get('combo_id',1);
         $combo = \DB::table("good_combos")->where('uid',$combo_id)->first();
         $order_line_data['header_id'] = $order_header_id;
         $order_line_data['good_id'] = $request->get('good_id',1);
-        if(!$has_bind_robot && $parent_id > 0){
+        if($is_first_buy && $parent_id > 0){
             $price = $combo->unit_price;
         }else{
             $price = $combo->original_unit_price;
