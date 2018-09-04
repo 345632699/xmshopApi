@@ -78,6 +78,24 @@ class ClientController extends BaseController
     }
     //add by cai 20180904 --start
     /**
+     * @api {get} /client/share 是否可分享
+     * @apiName 是否可分享
+     * @apiGroup Client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     */
+    public function checkShare(){
+        $client_id = $this->client->getUserByOpenId()->id;
+        $result = $this->client->checkShare($client_id);
+        if ($result){
+            return response_format(['can_share'=>1]);
+        }else{
+            return response_format(['can_share'=>0]);
+        }
+    }
+
+    /**
      * @api {get} /client/first 是否首次购买
      * @apiName 是否首次购买
      * @apiGroup Client

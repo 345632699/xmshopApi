@@ -1323,5 +1323,33 @@ define({ "api": [
         "url": "https://wxapp.honeybot.cn/api/client/first"
       }
     ]
+  },
+  {
+    "type": "get",
+    "url": "/client/share",
+    "title": "是否可分享",
+    "name": "share",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/client/share"
+      }
+    ]
   }
 ] });

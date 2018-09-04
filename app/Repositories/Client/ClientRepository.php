@@ -137,6 +137,16 @@ class ClientRepository implements ClientRepositoryInterface
         }
     }
     //add by cai 20180904 --start
+    public function checkShare($client_id){
+        $has_bind = $this->checkBind($client_id);
+        $count = Order::where(['client_id'=>$client_id,'order_status'=>4])->count();
+        if($has_bind || $count){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public function checkFirstBuy($client_id){
         $count = Order::whereRaw('client_id = ? AND ( order_status = 0 OR ( pay_date IS NOT NULL AND return_date IS NULL))',[$client_id])
             ->count();
