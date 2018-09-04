@@ -136,7 +136,7 @@ class ClientRepository implements ClientRepositoryInterface
             return false;
         }
     }
-
+    //add by cai 20180904 --start
     public function checkFirstBuy($client_id){
         $count = Order::whereRaw('client_id = ? AND ( order_status = 0 OR ( pay_date IS NOT NULL AND return_date IS NULL))',[$client_id])
             ->count();
@@ -146,7 +146,7 @@ class ClientRepository implements ClientRepositoryInterface
             return true;
         }
     }
-
+    //--end
     private function updateFrozenAmount($client_id, $parent_id, $spread_flag)
     {
         //update by cai 20180827 --start

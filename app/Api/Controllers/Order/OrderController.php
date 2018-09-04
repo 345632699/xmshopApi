@@ -93,7 +93,8 @@ class OrderController extends BaseController
         $order_status = $request->get('order_status',-1);
         $limit = $request->limit;
         $order_list = $this->order->getOrderList($order_status,$limit);
-        return response_format($order_list);
+        $now = time();
+        return response_format(['res'=>$order_list,'now'=>$now]);
     }
 
     /**

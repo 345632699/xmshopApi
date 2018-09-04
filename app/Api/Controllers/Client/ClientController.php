@@ -43,9 +43,11 @@ class ClientController extends BaseController
         $wait_pay = Order::where(['client_id'=>$client_id,'order_status'=>0])->count();
         $client->wait_pay = intval($wait_pay);
 
+        //add by cai 20180904 --start
         //待收货和已付款
         $wait_delivery = Order::where('client_id',$client_id)->whereIn('order_status',[1,3])->count();
         $client->wait_delivery = intval($wait_delivery);
+        //--end
 
         return response_format($client);
     }
@@ -74,7 +76,7 @@ class ClientController extends BaseController
             return response_format(['has_bind_robot'=>0]);
         }
     }
-
+    //add by cai 20180904 --start
     /**
      * @api {get} /client/first 是否首次购买
      * @apiName 是否首次购买
@@ -92,7 +94,7 @@ class ClientController extends BaseController
             return response_format(['is_first_buy'=>0]);
         }
     }
-
+    //--end
     /**
      * @api {get} /client/flow_list 资金变更流水
      * @apiName 资金变更流水
