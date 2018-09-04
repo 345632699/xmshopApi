@@ -39,13 +39,15 @@ class ClientController extends BaseController
                         ->first();
         $client->default_address_id = $address_id;
 
+        //add by cai 20180904 --start
         //待支付
-        $wait_pay = Order::where(['client_id'=>$client_id,'order_status'=>0])->count();
+        $wait_pay_close = Carbon::now()->modify('-1 hours');
+        $wait_pay = Order::where(['client_id'=>$client_id,'order_status'=>0])->where('order_date','>',$wait_pay_close)->count();
         $client->wait_pay = intval($wait_pay);
 
-        //add by cai 20180904 --start
         //待收货和已付款
-        $wait_delivery = Order::where('client_id',$client_id)->whereIn('order_status',[1,3])->count();
+        $wait_delivery_close = Carbon::now()->modify('-10 days');
+        $wait_delivery = Order::whereRaw('client_id = ? AND ( order_status = 1  OR ( order_status = 3 AND order_date > ?))',[$client_id,$wait_delivery_close])->count();
         $client->wait_delivery = intval($wait_delivery);
         //--end
 
