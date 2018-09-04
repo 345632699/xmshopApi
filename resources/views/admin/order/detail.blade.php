@@ -92,11 +92,11 @@
                                 <input type="hidden" name="order_id" value="{{ $order->uid }}">
                                 <span class="col-md-2">
                                     <input class="radio-inline" name="order_status" type="radio" value="0">
-                                    <label class="control-label" for="order_status">未支付</label>
+                                    <label class="control-label" for="order_status">待支付</label>
                                 </span>
                                 <span class="col-md-2">
                                     <input class="radio-inline" name="order_status" type="radio" value="1">
-                                    <label class="control-label" for="order_status">已支付</label>
+                                    <label class="control-label" for="order_status">已付款</label>
                                 </span>
                                 <span class="col-md-2">
                                     <input class="radio-inline" name="order_status" type="radio" value="2">
@@ -128,7 +128,7 @@
                                 </span>
                                 <span class="col-md-2">
                                     <input class="radio-inline" name="order_status" type="radio" value="9">
-                                    <label class="control-label" for="order_status">已取消</label>
+                                    <label class="control-label" for="order_status">已关闭</label>
                                 </span>
                                 <hr>
                                 <p class="col-sm-12">

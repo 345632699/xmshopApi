@@ -138,9 +138,7 @@ class ClientRepository implements ClientRepositoryInterface
     }
 
     public function checkFirstBuy($client_id){
-        $count = Order::where('client_id',$client_id)
-            ->whereNull('return_date')
-            ->whereNotNull('pay_date')
+        $count = Order::whereRaw('client_id = ? AND ( order_status = 0 OR ( pay_date IS NOT NULL AND return_date IS NULL))',[$client_id])
             ->count();
         if ($count){
             return false;

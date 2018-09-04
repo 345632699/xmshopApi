@@ -135,7 +135,7 @@ class OrderRepository implements OrderRepositoryInterface
                 ->leftJoin('clients','clients.id','=','order_headers.client_id')
                 ->where('order_headers.uid',$order_id)->first();
 
-            //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
+            //订单状态，见xm_lookup_values表ORDER_STATUS：0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭
             $order_status = $order->order_status;
             switch ($order_status){
                 case 0:

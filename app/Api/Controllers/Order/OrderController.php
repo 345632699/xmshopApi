@@ -56,7 +56,7 @@ class OrderController extends BaseController
     /**
      * @param $order_status
      * @return array
-     * 订单状态，ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
+     * 订单状态，ORDER_STATUS：0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭
      */
     /**
      * @api {get} /order/list 根据订单状态获取订单列表
@@ -65,13 +65,13 @@ class OrderController extends BaseController
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
-     * @apiParam {int} order_status 0-未支付，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消 -1 全部
+     * @apiParam {int} order_status 0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭 -1 全部
      * @apiParam {int} limit 每页显示条数
      *
      * @apiSuccess {int} order_id 订单ID
      * @apiSuccess {string} order_number 商品订单
      * @apiSuccess {int} order_type 0-预付款，1-货到付款
-     * @apiSuccess {int} order_status ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消
+     * @apiSuccess {int} order_status ORDER_STATUS：0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭
      * @apiSuccess {datetime} order_date 下单时间
      * @apiSuccess {datetime} pay_date 支付时间
      * @apiSuccess {int} contract_id 收货地址ID

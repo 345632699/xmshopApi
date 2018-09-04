@@ -1034,7 +1034,7 @@ define({ "api": [
             "type": "int",
             "optional": false,
             "field": "order_status",
-            "description": "<p>ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已取消</p>"
+            "description": "<p>ORDER_STATUS：0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭</p>"
           },
           {
             "group": "Success 200",

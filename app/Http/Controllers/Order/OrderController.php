@@ -30,14 +30,14 @@ class OrderController extends Controller
             ->leftJoin('clients','clients.id','=','order_headers.client_id')
             ->where($where)->paginate($limit);
         foreach($orderList as $order){
-            //订单状态，见xm_lookup_values表ORDER_STATUS：0-已下单，1-已支付，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货
+            //订单状态，见xm_lookup_values表ORDER_STATUS：0-待支付，1-已付款，2-待发货，3-已发货，4-已完成，5-异常，6-申请退货，7-确认退货，8-已退货 9-已关闭
             $order_status = $order->order_status;
             switch ($order_status){
                 case 0:
-                    $order->order_status_name = "未支付";
+                    $order->order_status_name = "待支付";
                     break;
                 case 1:
-                    $order->order_status_name = "已支付";
+                    $order->order_status_name = "已付款";
                     break;
                 case 2:
                     $order->order_status_name = "待发货";
@@ -61,7 +61,7 @@ class OrderController extends Controller
                     $order->order_status_name = "已退货";
                     break;
                 case 9:
-                    $order->order_status_name = "已取消";
+                    $order->order_status_name = "已关闭";
                     break;
             }
             // 0-预付款，1-货到付款
