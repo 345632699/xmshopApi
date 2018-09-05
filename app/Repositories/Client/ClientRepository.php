@@ -97,11 +97,12 @@ class ClientRepository implements ClientRepositoryInterface
                     $this->updateFrozenAmount($client_id,$first_spread_id,1);
 
                     //增加第二级推广人的冻结资金
-                    $second_spread_id = \DB::table('client_link_treepaths')->where([ //上两极的id
+                    $second_spread = \DB::table('client_link_treepaths')->where([ //上两极的id
                         ['path_end_client_id', '=', $client_id],
                         ['dist', '=', '2'],
-                    ])->first()->path_begin_client_id;
-                    if($second_spread_id){
+                    ])->first();
+                    if($second_spread){
+                        $second_spread_id = $second_spread->path_begin_client_id;
                         $this->updateFrozenAmount($client_id,$second_spread_id,2);
                     }
                     //--end
