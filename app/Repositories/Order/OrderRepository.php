@@ -87,13 +87,33 @@ class OrderRepository implements OrderRepositoryInterface
             $where['client_id'] = session('client.id');
         }
 
+        //add by cai 20180908 --start
+        if($order_status == -1 || $order_status == -2 || $order_status == 0 || $order_status == 3 ){
+            //关闭到期的待付款订单
+            $close_nonpayment_orders = \DB::select(
+                'UPDATE xm_order_headers
+                SET order_status = 9
+                WHERE order_date <= DATE_SUB(NOW(), INTERVAL 1 HOUR)
+                AND order_status = 0');
+
+            //完成待收货的订单
+            $update_deliveries = \DB::select(
+                'update xm_order_headers oh,xm_delivery de 
+                set oh.order_status = 4,
+                    oh.completion_date = now(),
+                    de.delivery_status = 2
+                where oh.request_close_date <= now()
+                and oh.uid = de.order_header_id');
+        }
+        //--end
+
         $order_list = \DB::table('order_headers')
             ->select('order_headers.*','order_headers.uid as order_id','ol.good_id','goods.name as good_name','goods.thumbnail','ol.color','ol.combo','ol.total_price','ol.unit_price','ol.quantity','ol.robot_id')
             ->leftJoin('order_lines as ol','ol.header_id','=','order_headers.uid')
             ->leftJoin('goods','goods.uid','=','good_id')
             ->where($where);
 
-        //update by cai 20180830 --start
+        //add by cai 20180830 --start
         if($order_status == -2){
             $order_list = $order_list -> whereIn('order_status', [1,3]);
         }
