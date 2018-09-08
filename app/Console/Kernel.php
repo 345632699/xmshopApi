@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\UpdateClient::class,
+        Commands\UpdateDelivery::class,
+        Commands\UpdateFreezingAmount::class,
+        Commands\ClosePendingPaymentOrder::class,
     ];
 
     /**
@@ -24,10 +26,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
-//        $schedule->command('clients:update')->dailyAt('0:00');
-        $schedule->command('clients:update')->everyMinute();
+        $schedule->command('freezingAmount:update')->dailyAt('00:01');
+        $schedule->command('deliveries:update')->dailyAt('00:02');
+        $schedule->command('orders:close')->dailyAt('00:03');
     }
 
     /**

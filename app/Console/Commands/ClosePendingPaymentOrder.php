@@ -3,22 +3,25 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use App\Model\Order;
+use Carbon\Carbon;
+use Mockery\Exception;
 
-class UpdateClient extends Command
+class ClosePendingPaymentOrder extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'clients:update';
+    protected $signature = 'orders:close';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'update the frozen money';
+    protected $description = '关闭过期的待付款订单';
 
     /**
      * Create a new command instance.
@@ -37,7 +40,12 @@ class UpdateClient extends Command
      */
     public function handle()
     {
-        //更新逻辑
-        file_put_contents('~/l.PHPog.txt',date('Y-m-d H:i:s').PHP_EOL,FILE_APPEND);
+        try{
+            $expire_date = Carbon::now()->modify('-1 hours');
+            $expire_orders = Order::whereRaw('order_date <= ? AND order_status = ?',[$expire_date,0]);
+            $expire_orders -> update(['order_status'=>9]);
+        }catch (Exception $e){
+            return $e->getMessage();
+        }
     }
 }
