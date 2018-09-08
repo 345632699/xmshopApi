@@ -211,9 +211,8 @@ class OrderController extends BaseController
      *
      */
     public function cancelOrder(Request $request){
-        $order_id = intval($request->order_id);
         $client_id = session('client.id');
-        $res = $this->order->cancel($order_id,$client_id);
+        $res = $this->order->cancel($request,$client_id);
         return response_format([],$res['status'],$res['msg'],$res['statusCode']);
     }
 

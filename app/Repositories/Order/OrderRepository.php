@@ -249,8 +249,9 @@ class OrderRepository implements OrderRepositoryInterface
      * @return mixed
      * 取消订单
      */
-    public function cancel($order_id, $client_id)
+    public function cancel($request, $client_id)
     {
+        $order_id = intval($request->order_id);
         if (is_null($order_id)){
             return response_format([],0,'缺少order_id参数',400);
         }
@@ -260,7 +261,7 @@ class OrderRepository implements OrderRepositoryInterface
             //确保订单是 本人在操作
             $order = DB::table('order_headers')->where(['uid'=>$order_id,'client_id'=>$client_id,'order_status'=>0]);
             if ($order){
-                $orderRes = $order->update(['order_status'=>9]);
+                $orderRes = $order->update(['order_status'=>9,'cancel_reason'=>$request->cancel_reason]);
             }
 
             if ($orderRes){
