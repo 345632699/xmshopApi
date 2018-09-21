@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Authenticatable
 {
-    protected $fillable = ['id','name','email','password'];
+    protected $fillable = ['id','union_id','nick_name','email','password','avatar_url'];
 
 
     /**

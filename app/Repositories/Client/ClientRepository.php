@@ -10,6 +10,7 @@ namespace App\Repositories\Client;
 use App\Model\Order;
 use App\Model\Client;
 use App\Model\ClientAmount;
+use App\Model\ClientCoupons;
 use Carbon\Carbon;
 use JWTAuth;
 use Mockery\Exception;
@@ -139,9 +140,10 @@ class ClientRepository implements ClientRepositoryInterface
     }
     //add by cai 20180904 --start
     public function checkShare($client_id){
-        $has_bind = $this->checkBind($client_id);
+        //$has_bind = $this->checkBind($client_id);
+	$has_bind = \DB::table('client_link_mapping')->where(['child_client_id'=>$client_id,'enabled_flag'=>'Y'])->count();
         $count = Order::where(['client_id'=>$client_id,'order_status'=>4])->count();
-        if($has_bind || $count){
+        if($has_bind && $count){
             return true;
         }else{
             return false;
@@ -192,4 +194,47 @@ class ClientRepository implements ClientRepositoryInterface
             \Log::info($parent_id."冻结金额增加成功，金额为：".$record['amount']);
         }
     }
+
+    //add by cai 20180918 --start
+    public function getSpreadCoupon($request,$client_id){
+        $coupon = \DB::table('coupons')->where(['type'=>1,'scope'=>1])->first();
+        $client_coupon_data['coupon_id'] = $coupon->uid;
+        $client_coupon_data['coupon_amount'] = $coupon->coupon_amount;
+        $client_coupon_data['expired_date'] = Carbon::now()->modify('+'.$coupon->expired_day.' days');
+        $client_coupon_data['client_id'] = $client_id;
+        $client_coupon_data['spreader_id'] = $request->parent_id;
+        $client_coupon_data['status'] = 1;
+        $client_coupon_data['created_at'] = Carbon::now();
+
+        $insert_client_coupon = ClientCoupons::create($client_coupon_data);
+        if($insert_client_coupon) return $insert_client_coupon;
+    }
+
+    public function getCouponList($request,$client_id){
+        $limit = $request->get('limit',20);
+        $type = $request->get('type',-1);
+
+        $now = Carbon::now()->toDateTimeString();
+        $coupon_list = ClientCoupons::select('client_coupons.*','coupons.description','coupons.type','coupons.image_url')
+            ->leftJoin('coupons','coupons.uid','=','client_coupons.coupon_id')
+            ->where('client_id',$client_id);
+
+        if ($type > -1) {
+            $where['status'] = $type;
+            if($type == 1){//返回有效优惠券
+                $coupon_list = $coupon_list->where($where)->where('expired_date', '>', $now);
+            }
+            if($type == 0){//返回已失效优惠券
+                $coupon_list = $coupon_list
+                    ->where(function ($query) use($where,$now){
+                        $query->where($where)
+                            ->orWhere('expired_date', '<=', $now);
+                    });
+            }
+        }
+
+        $coupon_list = $coupon_list->latest() ->paginate($limit)->toArray();
+        return $coupon_list;
+    }
+    //--end
 }

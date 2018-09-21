@@ -23,6 +23,7 @@ class Order extends Model
         'contract_id',
         'request_close_date',
         'open_invoice_flag',
+        'cancel_reason',
         'updated_at',
         'created_at',
     ];

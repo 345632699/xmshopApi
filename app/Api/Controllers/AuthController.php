@@ -50,11 +50,13 @@ class AuthController extends BaseController
     {
         $newUser = [
             'union_id' => $request->get('union_id'),
-            'name' => $request->get('name'),
+            'nick_name' => $request->get('name'),
             'password' => bcrypt("admin123"),
             'avatar_url' => bcrypt("admin123")
         ];
+
         $user = Client::create($newUser);
+
         $token = JWTAuth::fromUser($user);
         return $token;
     }

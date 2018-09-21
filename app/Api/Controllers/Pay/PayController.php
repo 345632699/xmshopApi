@@ -129,19 +129,17 @@ class PayController extends BaseController
         }
         $client = $this->client->getUserByOpenId();
         $client_id = $client->id;
-//        $amount = \DB::table('client_amount')->where('client_id',$client_id)->first();
         $amount = ClientAmount::where('client_id',$client_id)->first();
         if ($amount){
             $can_withdraw_amount = $amount->amount - $amount->freezing_amount;
             if ( $can_withdraw_amount >= $withdraw_amount){
                 //record
                 $withdraw_record['client_id'] = $client_id;
-                $withdraw_record['partner_trade_no'] = 'W'.time();
+                $withdraw_record['partner_trade_no'] = 'W'.generate_order_number();
                 $withdraw_record['amount'] = $withdraw_amount;
                 $withdraw_record['created_at'] = Carbon::now();
                 $withdraw_record['updated_at'] = Carbon::now();
 
-//                $res = \DB::table('withdraw_record')->create($withdraw_record);
                 $res = WithdrawRecord::create($withdraw_record);
                 if ($res->uid) {
                     $update['amount'] = $amount->amount - $withdraw_amount;
@@ -155,7 +153,7 @@ class PayController extends BaseController
                 return response_format([],0,'可提余额不足');
             }
         }else{
-            return response_format([],0,'个人信息获取失败');
+            return response_format([],0,'账户获取失败');
         }
     }
 

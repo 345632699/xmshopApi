@@ -45,7 +45,7 @@ class PayRepository implements PayRepositoryInterface
             $pay['client_id'] = $client->id;
             $pay['parent_id'] = $parent_id;
             $pay['order_header_id'] = $order->uid;
-            $pay['pay_order_number'] = config('wechat.payment.default.mch_id').time();
+            $pay['pay_order_number'] = generate_order_number();
             $pay['total_price'] = $order->quantity * $order->unit_price * 100;
             $pay['created_at'] = Carbon::now();
             $pay['updated_at'] = Carbon::now();

@@ -765,6 +765,13 @@ define({ "api": [
             "group": "Parameter",
             "type": "int",
             "optional": false,
+            "field": "client_coupon_id",
+            "description": "<p>用户优惠券id 0为不使用优惠券</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
             "field": "address_id",
             "description": "<p>地址ID</p>"
           },
@@ -1349,6 +1356,198 @@ define({ "api": [
     "sampleRequest": [
       {
         "url": "https://wxapp.honeybot.cn/api/client/share"
+      }
+    ]
+  },
+  {
+    "type": "post",
+    "url": "/client/get_spread_coupon",
+    "title": "领取优惠券",
+    "name": "GetSpreadCoupon",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "parent_id",
+            "description": "<p>推广人ID</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "result_flag",
+            "description": "<p>0-异常 1-领取成功  2-不成功，已享受过新手优惠  3-不成功，存在未使用的优惠券  4-不成功，已经领取过该优惠券</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/client/get_spread_coupon"
+      }
+    ]
+  },
+  {
+    "type": "get",
+    "url": "/client/get_coupon_list",
+    "title": "获取优惠券列表",
+    "name": "GetCouponList",
+    "group": "Client",
+    "header": {
+      "fields": {
+        "Authorization": [
+          {
+            "group": "Authorization",
+            "type": "String",
+            "optional": false,
+            "field": "authorization",
+            "description": "<p>Authorization value.</p>"
+          }
+        ]
+      }
+    },
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "limit",
+            "description": "<p>不传默认20</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>1 有效  0 已失效  -1 全部</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "boolean",
+            "optional": false,
+            "field": "is_taken",
+            "description": "<p>是否已经领取过 true已领取过 false未领取过</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "result",
+            "description": "<p>优惠券相关信息</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "uid",
+            "description": "<p>用户优惠券id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "coupon_amount",
+            "description": "<p>优惠券优惠金额</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "expired_date",
+            "description": "<p>券到期时间</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "coupon_id",
+            "description": "<p>优惠券id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "client_id",
+            "description": "<p>用户id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "spreader_id",
+            "description": "<p>推广人id</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "status",
+            "description": "<p>使用状态 1-可使用，0-已使用</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "description",
+            "description": "<p>优惠券说明</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "type",
+            "description": "<p>优惠券类型 1-优惠券，2-折扣券，3-满减券</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "int",
+            "optional": false,
+            "field": "expired_day",
+            "description": "<p>券有效天数</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "app/Api/Controllers/Client/ClientController.php",
+    "groupTitle": "Client",
+    "sampleRequest": [
+      {
+        "url": "https://wxapp.honeybot.cn/api/client/get_coupon_list"
       }
     ]
   }

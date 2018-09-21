@@ -94,7 +94,7 @@ class OrderController extends BaseController
      */
     public function getOrderList(Request $request){
         $order_status = $request->get('order_status',-1);
-        $limit = $request->limit;
+        $limit = $request->get('limit',5);
         $order_list = $this->order->getOrderList($order_status,$limit);
         //update by cai 20180904 --start
         $now = time();
@@ -109,6 +109,7 @@ class OrderController extends BaseController
      *
      * @apiHeader (Authorization) {String} authorization Authorization value.
      *
+     * @apiParam {int} client_coupon_id 用户优惠券id 0为不使用优惠券
      * @apiParam {int} address_id 地址ID
      * @apiParam {string} open_invoice_flag 是否开具发票 Y 开 N否
      * @apiParam {int} good_id 商品id
@@ -137,7 +138,7 @@ class OrderController extends BaseController
         $client_id = $client->id;
         $parent_id = $request->parent_id;
         //判断是否存在订单 存在则不重新新建
-        if ($request->order_header_id > 0){
+        if ($request->order_header_id){
             $payJssdk = $this->getPayJssdk($request->order_header_id,$client,$parent_id);
             return response_format($payJssdk);
         }
@@ -145,12 +146,15 @@ class OrderController extends BaseController
         if (is_null($request->address_id)){
             return response_format([],0,'请选择地址');
         }
-        //k可以加事務
+        //可以加事務
         try{
             //添加order头
             $order_header = $this->order->createOrderHeader($request,$client_id);
             $order_header_id = $order_header->uid;
             if ($order_header_id) {
+                //添加mapping表记录
+                $order_mapping = $this->order->createLinkMapping($order_header->uid,$request,$parent_id);
+
                 //添加order详情
                 $order_line = $this->order->createOrderLine($order_header->uid,$request,$parent_id);
 
@@ -163,7 +167,7 @@ class OrderController extends BaseController
                     $this->order->createInvoice($client_id,$order_header_id,$order_line->total_price,$request);
                 }
                 //生成微信支付订单 并 返回支付相关的JS配置
-                if ($order_line && $delivery){
+                if ($order_line && $delivery && $order_mapping){
                     $payJssdk = $this->getPayJssdk($order_header_id,$client,$parent_id);
                     return response_format($payJssdk);
                 }

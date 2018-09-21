@@ -39,10 +39,7 @@ class AddressController extends BaseController
     public function index(Request $request) {
         $limit = $request->get('limit',5);
         $client_id = session('client.id');
-        //update by cai 20180824
-        //update start
-        $address_list = Contact::where('client_id',$client_id)->orderBy('default_flag', 'desc')->paginate($limit)->toArray();
-        //update end
+        $address_list = Contact::where('client_id',$client_id)->latest('default_flag')->paginate($limit);
         return response_format($address_list);
     }
 
@@ -67,7 +64,9 @@ class AddressController extends BaseController
         if (!$address_id){
             return response_format(['err_msg'=>'地址ID 不能为空']);
         }
-        $address = Contact::find($address_id);
+        $client = $this->client->getUserByOpenId();
+        $client_id = $client->id;
+        $address = Contact::where(['client_id'=>$client_id])->find($address_id);
         return response_format($address);
     }
 
@@ -141,7 +140,7 @@ class AddressController extends BaseController
             Contact::where('client_id',$client_id)->update(['default_flag'=>"N"]);
         }
         $input = $request->input();
-        $address = Contact::find($address_id);
+        $address = Contact::where(['client_id'=>$client_id])->find($address_id);
         if ($address){
             $res = $address->update($input);
             $msg = "更新成功";
@@ -176,11 +175,10 @@ class AddressController extends BaseController
         $address_id = $request->address_id;
         $client_id = session('client.id');
         try{
-            $address = Contact::where(['uid'=>$address_id,'client_id'=>$client_id])->first();
-            $address->delete();
+            Contact::where(['uid'=>$address_id,'client_id'=>$client_id])->delete();
             return response_format([]);
         }catch (\PDOException $e){
-            return response_format([],0,"数据查询出错",400);
+            return response_format([],0,"删除失败",400);
         }
     }
 

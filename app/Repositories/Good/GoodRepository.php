@@ -10,6 +10,7 @@ namespace App\Repositories\Good;
 
 
 use App\Model\Good;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class GoodRepository implements GoodRepositoryInterface
 {
@@ -22,9 +23,13 @@ class GoodRepository implements GoodRepositoryInterface
     public function getGood($good_id)
     {
         try{
-            $goods = Good::select("goods.*")
-                ->where('goods.uid',$good_id)
+            $goods = Good::where('uid',$good_id)
                 ->first();
+
+            if(!$goods){
+                throw new NotFoundHttpException('商品不存在');
+            }
+
             $goods->combo_list = \DB::table('good_combos')
                 ->select('uid','name','unit_price','original_unit_price')
                 ->where('good_id',$good_id)
@@ -45,7 +50,9 @@ class GoodRepository implements GoodRepositoryInterface
                 ->pluck('url');
 
             return response_format($goods);
-        }catch (Exception $e){
+        }catch (NotFoundHttpException $exception){
+            return response_format([],0,"商品不存在");
+        } catch (Exception $e){
             return response_format([],0,$e->getMessage());
         }
     }

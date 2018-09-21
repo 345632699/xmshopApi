@@ -4,7 +4,7 @@ namespace App\Api\Controllers\Client;
 
 use App\Api\Controllers\BaseController;
 use App\Model\Client;
-use App\Model\Delivery;
+use App\Model\ClientCoupons;
 use App\Model\Order;
 use Carbon\Carbon;
 use App\Repositories\Client\ClientRepository;
@@ -33,7 +33,7 @@ class ClientController extends BaseController
         $client = Client::select('nick_name','clients.phone_num','avatar_url','amount','freezing_amount')
                         ->leftJoin('client_amount','client_id','=','clients.id')
                         ->where('id',$client_id)
-                        ->get()->first();
+                        ->first();
         $address_id = \DB::table('client_delivery_contact')
                         ->where('client_id',$client_id)
                         ->Where('default_flag','Y')
@@ -140,8 +140,87 @@ class ClientController extends BaseController
             ->leftJoin('clients','clients.id','=','child_id')
             ->where($where)
             ->orderBy('uid','desc')
-            ->limit($limit)->get();
+            ->paginate($limit);
         return response_format($flow_list);
     }
 
+    //add by cai 20180918 --start
+
+    /**
+     * @api {post} /client/get_spread_coupon 领取优惠券
+     * @apiName GetSpreadCoupon
+     * @apiGroup client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} parent_id 推广人ID
+     *
+     * @apiSuccess {int} result_flag 0-异常 1-领取成功  2-不成功，已享受过新手优惠  3-不成功，存在未使用的优惠券  4-不成功，已经领取过该优惠券
+     *
+     */
+    public function getSpreadCoupon(Request $request){
+        $client_id = $this->client->getUserByOpenId()->id;
+        $client_coupon = ClientCoupons::where('client_id',$client_id);
+        $result_flag = 0;//异常
+
+        if($client_coupon->get()){//存在优惠券
+            $is_new_client = $client_coupon->where('status',0)->get()->count();
+            if($is_new_client){//已经使用过优惠券
+                $result_flag = 2;
+            }
+            else{//还没有使用过优惠券
+                $is_taken = ClientCoupons::where(['client_id'=>$client_id,'spreader_id'=>$request->parent_id])->get()->count();
+                if($is_taken){//已经通过这个推广者的链接领取过优惠券
+                    $result_flag = 4;
+                }
+                else{//没有通过这个推广者的链接领取过优惠券
+                    $now = Carbon::now()->toDateTimeString();
+                    $is_has_coupon = ClientCoupons::where('client_id',$client_id)->where('expired_date', '>', $now)->get()->count();
+                    if($is_has_coupon){//存在未过期的可使用的优惠券
+                        $result_flag = 3;
+                    }
+                    else{
+                        $result = $this->client->getSpreadCoupon($request,$client_id);
+                        if($result) $result_flag = 1;
+                    }
+                }
+            }
+        }
+        else{//不存在优惠券
+            $result = $this->client->getSpreadCoupon($request,$client_id);
+            if($result) $result_flag = 1;
+        }
+        return response_format(['result_flag'=>$result_flag]);
+    }
+
+    /**
+     * @api {get} /client/get_coupon_list 获取优惠券列表
+     * @apiName GetCouponList
+     * @apiGroup client
+     *
+     * @apiHeader (Authorization) {String} authorization Authorization value.
+     *
+     * @apiParam {int} type 优惠券类型 1 有效  2 已失效  -1 全部
+     * @apiParam {int} limit 返回条数 不传默认20
+     *
+     * @apiSuccess {Array} data 优惠券列表
+     * @apiSuccess {int} uid 用户优惠券id
+     * @apiSuccess {string} coupon_amount 优惠券优惠金额
+     * @apiSuccess {string} expired_date 券到期时间
+     * @apiSuccess {int} coupon_id 优惠券id
+     * @apiSuccess {int} client_id 用户id
+     * @apiSuccess {int} spreader_id 推广人id
+     * @apiSuccess {int} status 使用状态 1-可使用，0-已使用
+     * @apiSuccess {string} description 优惠券说明
+     * @apiSuccess {int} type 优惠券类型 1-优惠券，2-折扣券，3-满减券
+     * @apiSuccess {int} expired_day 券有效天数
+     *
+     */
+    public function getCouponList(Request $request){
+        $client_id = $this->client->getUserByOpenId()->id;
+        $coupon_list = $this->client->getCouponList($request,$client_id);
+        return response_format($coupon_list);
+    }
+
+    //--end
 }
